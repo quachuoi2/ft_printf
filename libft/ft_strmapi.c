@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/28 13:46:55 by qnguyen          ###   ########.fr       */
+/*   Created: 2021/11/03 14:29:40 by qnguyen           #+#    #+#             */
+/*   Updated: 2021/12/07 19:15:51 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft.h"
-#include <stdio.h> //REMOVE
+char	*ft_strmapi(const char *s, char (*f)(unsigned int, char))
+{
+	char	*s_n;
+	int		i;
 
-int	ft_printf(const char *restrict format, ...);
-
-#endif
+	if (f == NULL)
+		return (NULL);
+	i = 0;
+	s_n = (char *)malloc(ft_strlen((char *)s) + 1);
+	if (s_n == NULL)
+		return (NULL);
+	while (s[i] != '\0')
+	{
+		s_n[i] = f(i, s[i]);
+		i++;
+	}
+	s_n[i] = '\0';
+	return (s_n);
+}

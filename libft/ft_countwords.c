@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_countwords.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/28 13:46:55 by qnguyen          ###   ########.fr       */
+/*   Created: 2021/12/02 18:01:45 by qnguyen           #+#    #+#             */
+/*   Updated: 2021/12/02 18:01:54 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft.h"
-#include <stdio.h> //REMOVE
+int	ft_countwords(const char *s, char c)
+{
+	int	i;
+	int	words;
 
-int	ft_printf(const char *restrict format, ...);
-
-#endif
+	i = 0;
+	words = 0;
+	while (s[i] != '\0')
+	{
+		if ((s[i] == c) && (s[i + 1] != c) && (s[i + 1] != '\0'))
+			words++;
+		i++;
+	}
+	if (s[0] != c)
+		words++;
+	return (words);
+}

@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/28 13:46:55 by qnguyen          ###   ########.fr       */
+/*   Created: 2021/11/01 17:16:10 by qnguyen           #+#    #+#             */
+/*   Updated: 2021/12/07 16:29:58 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft.h"
-#include <stdio.h> //REMOVE
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	size_t	i;
 
-int	ft_printf(const char *restrict format, ...);
-
-#endif
+	i = 0;
+	while (i < n)
+	{
+		if (((const unsigned char *)s1)[i] -
+			((const unsigned char *)s2)[i] != 0)
+			return (((const unsigned char *)s1)[i] -
+					((const unsigned char *)s2)[i]);
+		i++;
+	}
+	return (0);
+}

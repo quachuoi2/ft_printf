@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_lstdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/28 13:46:55 by qnguyen          ###   ########.fr       */
+/*   Created: 2021/11/07 02:18:07 by qnguyen           #+#    #+#             */
+/*   Updated: 2021/12/07 18:50:46 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft.h"
-#include <stdio.h> //REMOVE
+void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+{
+	t_list	*temp;
 
-int	ft_printf(const char *restrict format, ...);
-
-#endif
+	if (del == NULL || *alst == NULL)
+		return ;
+	while (*alst != NULL)
+	{
+		temp = (**alst).next;
+		del((**alst).content, (**alst).content_size);
+		free(*alst);
+		*alst = temp;
+	}
+}

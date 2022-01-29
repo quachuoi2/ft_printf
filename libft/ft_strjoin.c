@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/28 13:46:55 by qnguyen          ###   ########.fr       */
+/*   Created: 2021/11/03 17:21:08 by qnguyen           #+#    #+#             */
+/*   Updated: 2021/12/09 14:03:31 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft.h"
-#include <stdio.h> //REMOVE
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*new;
 
-int	ft_printf(const char *restrict format, ...);
-
-#endif
+	if (s1 == NULL && s2 == NULL)
+		return (NULL);
+	else if (s1 == NULL)
+		return (ft_strdup(s2));
+	else if (s2 == NULL)
+		return (ft_strdup(s1));
+	new = (char *)ft_memalloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (new == NULL)
+		return (NULL);
+	ft_strcpy(new, s1);
+	ft_strcat(new, s2);
+	return (new);
+}

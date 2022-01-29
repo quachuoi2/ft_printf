@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/28 13:46:55 by qnguyen          ###   ########.fr       */
+/*   Created: 2021/11/01 20:22:05 by qnguyen           #+#    #+#             */
+/*   Updated: 2021/12/07 18:34:14 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft.h"
-#include <stdio.h> //REMOVE
+void	*ft_memmove(void *dst, const void *src, size_t len)
+{
+	size_t	i;
 
-int	ft_printf(const char *restrict format, ...);
-
-#endif
+	if (dst < src)
+	{
+		i = -1;
+		while (++i < len)
+			((char *)dst)[i] = ((const char *)src)[i];
+	}
+	else if (dst > src)
+	{
+		while ((int)--len >= 0)
+			((char *)dst)[len] = ((const char *)src)[len];
+	}
+	return (dst);
+}

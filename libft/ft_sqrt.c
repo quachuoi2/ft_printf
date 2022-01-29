@@ -1,22 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_sqrt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/28 13:46:55 by qnguyen          ###   ########.fr       */
+/*   Created: 2021/10/28 18:40:19 by okinnune          #+#    #+#             */
+/*   Updated: 2022/01/12 23:11:23 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft.h"
-#include <stdio.h> //REMOVE
+int	ft_sqrt(int num)
+{
+	int	i;
+	int	min;
+	int	max;
+	int	s;
 
-int	ft_printf(const char *restrict format, ...);
-
-#endif
+	i = 1;
+	s = i;
+	min = i;
+	max = num;
+	while (s != num && max - min != 1)
+	{
+		if (s < num)
+		{
+			min = i;
+			i = (i + max) / 2;
+		}
+		else
+		{
+			max = i;
+			i = (i + min) / 2;
+		}
+		s = i * i;
+	}
+	return (i);
+}

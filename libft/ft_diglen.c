@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   ft_dlen.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/28 13:46:55 by qnguyen          ###   ########.fr       */
+/*   Created: 2021/12/02 17:45:03 by qnguyen           #+#    #+#             */
+/*   Updated: 2021/12/02 17:45:33 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFTPRINTF_H
-# define LIBFTPRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft.h"
-#include <stdio.h> //REMOVE
+int	ft_diglen(int n)
+{
+	int	i;
 
-int	ft_printf(const char *restrict format, ...);
-
-#endif
+	i = 1;
+	if (n == -2147483648)
+		return (10);
+	if (n < 0)
+		n = -n;
+	while (n / 10 > 0)
+	{
+		n = n / 10;
+		i++;
+	}
+	return (i);
+}
