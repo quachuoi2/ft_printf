@@ -6,74 +6,74 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/29 11:18:51 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/02 15:31:03 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-char	hex_digit(int v)
+void	convert(char conv, va_list ap)
 {
-	if (v >= 0 && v < 10)
-		return ('0' + v);
+	if (conv == 'c')
+		ft_putchar(va_arg(ap, int));
+	else if (conv == 'p')
+	{
+		write(1, "0x", 2);
+		ft_d2h((intptr_t)va_arg(ap, void *), 'x');
+	}
+	else if (conv == 'd' || conv == 'i')
+		ft_putnbr(va_arg(ap, int));
+	else if (conv == 'o')
+		ft_d2o(va_arg(ap, unsigned int));
+	else if (conv == 'u')
+		ft_putnbr(va_arg(ap, unsigned int));
+	else if (conv == 'x' || conv == 'X')
+		ft_d2h(va_arg(ap, unsigned int), conv);
+	else if (conv == 'f')
+		va_arg(ap, double);
+	else if (conv == 's')
+		ft_putstr(va_arg(ap, char *));
+	else if (conv == '%')
+		ft_putchar(conv);
 	else
-		return ('a' + v - 10);
+		ft_putstr_fd("error: unknown conversion type", 2);
 }
 
-void	ft_hexprint(void *p0)
+void	take_subway_order(char **fmt, va_list ap, t_order *order)
 {
-	char		bool;
-	int			i;
-	intptr_t	p;
-
-	p = (intptr_t)p0;
-	i = (sizeof(p) << 3) - 4;
-	bool = 0;
-	write(1, "0x", 2);
-	while (i >= 0)
+	(*fmt)++;
+	if (**fmt == '%')
 	{
-		if (!bool && hex_digit((p >> i) & 0b1111) != '0')
-			bool = 1;
-		else if (bool)
-			ft_putchar(hex_digit((p >> i) & 0b1111));
-		i -= 4;
+		ft_putchar('%');
+		return ;
 	}
-}
-
-void	type_check(char **restrict p_fmt, va_list ap)
-{
-	char	c;
-	int		d;
-	char	*s;
-	void	*p;
-
-	if (**p_fmt == '%')
+	check_conv(*fmt, order);
+	if ((*order).conv == 0)
 	{
-		*p_fmt += 1;
-		if (**p_fmt == 'c')
-			ft_putchar(va_arg(ap, int));
-		else if (**p_fmt == 'd')
-			ft_putnbr(va_arg(ap, int));
-		else if (**p_fmt == 'p')
-			ft_hexprint(va_arg(ap, void *));
-		else if (**p_fmt == 's')
-			ft_putstr(va_arg(ap, char *));
-		else if (**p_fmt == '%')
-			ft_putchar(**p_fmt);
+		ft_putstr_fd("error\n", 2);
+		return ;
 	}
-	else
-		ft_putchar(**p_fmt);
+	check_prefix(*fmt, order);
+	convert((*order).conv, ap);
 }
 
 int	ft_printf(const char *restrict fmt, ...)
 {
+	int		char_printed;
 	va_list	ap;
+	t_order	order;
 
+	initialize_t_order(&order);
 	va_start(ap, fmt);
 	while (*fmt)
 	{
-		type_check((char **)&fmt, ap);
-		fmt++;
+		if (*fmt == '%')
+			take_subway_order((char **)&fmt, ap, &order);
+		else
+			ft_putchar(*fmt);
+		*fmt++;
 	}
 	va_end(ap);
+	char_printed = order.pos + order.space + order.hash;
+	return (char_printed);
 }

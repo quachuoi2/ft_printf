@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   utilities.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/03 16:05:48 by qnguyen           #+#    #+#             */
-/*   Updated: 2021/11/13 17:37:44 by qnguyen          ###   ########.fr       */
+/*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
+/*   Updated: 2022/02/02 14:27:02 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "libftprintf.h"
 
-char	*ft_strsub(char const *s, unsigned int start, size_t len)
+void	initialize_t_order(t_order *order)
 {
-	char	*str;
-	size_t	i;
-
-	str = (char *)malloc(sizeof(char) * (len + 1));
-	if (str == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		str[i] = s[start + i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
+	(*order).mfw = 0;
+	(*order).space = 0;
+	(*order).hash = 0;
+	(*order).zero = 0;
+	(*order).neg = 0;
+	(*order).pos = 0;
+	(*order).prec = 0;
+	(*order).conv = 0;
 }

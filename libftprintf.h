@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/01/29 11:12:25 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/02 14:26:05 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,29 @@
 # include <stdarg.h>
 # include "libft.h"
 # include <unistd.h>
-#include <stdio.h> //REMOVE
+# include <stdio.h> //REMOVE
 
-int	ft_printf(const char *restrict format, ...);
+typedef struct s_order
+{
+	int		mfw;
+	int		space;
+	int		hash;
+	int		zero;
+	int		neg;
+	int		pos;
+	int		prec;
+	char	conv;
+}				t_order;
+
+//libftprintf.c
+int				ft_printf(const char *restrict format, ...);
+
+//prefix.c
+void			check_prefix(char *fmt, t_order *order);
+void			check_flag(char *fmt, t_order *order);
+void			check_conv(char *fmt, t_order *order);
+
+//utilities.c
+void			initialize_t_order(t_order *order);
 
 #endif
