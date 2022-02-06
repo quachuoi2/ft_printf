@@ -6,7 +6,7 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/24 10:35:47 by qnguyen           #+#    #+#              #
-#    Updated: 2022/02/02 14:28:00 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/02/07 00:27:45 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,12 +17,12 @@ NAME = libftprintf.a
 SRCS = libftprintf main prefix utilities
 FLAGS = -Wall -Wextra -Werror
 NITPICK = -Wpedantic -Wunused -Wconversion -Wunreachable-code -Wtype-limits
-INCLUDES = -I../libft/includes
+INCLUDES = -I../libft/
 LIB = -L../libft/ -lft
 
 all: $(NAME)
 
-$(NAME):
+$(NAME): $(addsuffix .c, $(SRCS))
 	@gcc $(addsuffix .c, $(SRCS)) $(LIB) $(INCLUDES)
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/02 15:33:36 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/03 07:37:16 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,16 @@ void	check_conv(char *fmt, t_order *order)
 	int		i;
 
 	ft_strcpy(conv, "cspdiouxXf %");
-	while (!ft_isalpha(*fmt))
+	while (!ft_isalpha(*fmt) && *fmt)
 		fmt++;
 	i = 0;
 	//checkflags"hh h ll l L"
 	while (conv[i])
 	{
 		if (*fmt == conv[i])
+		{
 			(*order).conv = *fmt;
+		}
 		i++;
 	}
 }
