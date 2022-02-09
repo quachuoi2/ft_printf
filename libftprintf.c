@@ -6,55 +6,38 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/02 15:31:03 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/09 23:34:37 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-void	convert(char conv, va_list ap)
+int	convert(t_order order, va_list ap)
 {
-	if (conv == 'c')
-		ft_putchar(va_arg(ap, int));
-	else if (conv == 'p')
-	{
-		write(1, "0x", 2);
-		ft_d2h((intptr_t)va_arg(ap, void *), 'x');
-	}
-	else if (conv == 'd' || conv == 'i')
-		ft_putnbr(va_arg(ap, int));
-	else if (conv == 'o')
-		ft_d2o(va_arg(ap, unsigned int));
-	else if (conv == 'u')
-		ft_putnbr(va_arg(ap, unsigned int));
-	else if (conv == 'x' || conv == 'X')
-		ft_d2h(va_arg(ap, unsigned int), conv);
-	else if (conv == 'f')
-		va_arg(ap, double);
-	else if (conv == 's')
-		ft_putstr(va_arg(ap, char *));
-	else if (conv == '%')
-		ft_putchar(conv);
-	else
-		ft_putstr_fd("error: unknown conversion type", 2);
+		if (order.conv == 'c' || order.conv == 's' || order.conv == 'p')
+		return (csp(order, ap));
+	else if (order.conv == 'd' || order.conv == 'i' || order.conv == 'f')
+		return (dif(order, ap));
+	else if (order.conv == 'o' || order.conv == 'u' || order.conv == 'x'
+		|| order.conv == 'X')
+		return (ouxX(order, ap));
+	ft_putstr_fd("error: unknown conversion type\n", 2);
+	exit(0);
 }
 
-void	take_subway_order(char **fmt, va_list ap, t_order *order)
+int	take_subway_order(char **fmt, va_list ap, t_order *order)
 {
 	(*fmt)++;
+	initialize_t_order(order);
 	if (**fmt == '%')
-	{
-		ft_putchar('%');
-		return ;
-	}
-	check_conv(*fmt, order);
-	if ((*order).conv == 0)
-	{
-		ft_putstr_fd("error\n", 2);
-		return ;
-	}
-	check_prefix(*fmt, order);
-	convert((*order).conv, ap);
+		return (ft_putchar('%'));
+	check_prefix(fmt, order);
+	check_flag(fmt, order);
+	check_conv(fmt, order);
+	//printf("\nspc - %d\nhash - %d\nzero - %d\nneg - %d\npos - %d\nmwf - %d\nprec - %d\nflag - %c%c\nconv - %c\n", (*order).space, (*order).hash, (*order).zero, (*order).neg, (*order).pos, (*order).mfw, (*order).prec, (*order).flag[0], (*order).flag[1], (*order).conv);
+	/* if (!empty_conv(*order, **fmt) || !repeated_flag(*order))
+		return (0); */
+	return (convert(*order, ap));
 }
 
 int	ft_printf(const char *restrict fmt, ...)
@@ -63,17 +46,16 @@ int	ft_printf(const char *restrict fmt, ...)
 	va_list	ap;
 	t_order	order;
 
-	initialize_t_order(&order);
 	va_start(ap, fmt);
+	char_printed = 0;
 	while (*fmt)
 	{
 		if (*fmt == '%')
-			take_subway_order((char **)&fmt, ap, &order);
+			char_printed += take_subway_order((char **)&fmt, ap, &order);
 		else
-			ft_putchar(*fmt);
-		*fmt++;
+			char_printed += ft_putchar(*fmt);
+		fmt++;
 	}
 	va_end(ap);
-	char_printed = order.pos + order.space + order.hash;
 	return (char_printed);
 }

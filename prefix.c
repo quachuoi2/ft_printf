@@ -6,69 +6,61 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/02 15:45:51 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/10 01:50:39 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-void	check_conv(char *fmt, t_order *order)
+void	check_prefix(char **fmt, t_order *order)
+{
+	while (!ft_isalpha(**fmt))
+	{
+		if ((*order).mfw == 0 && (*order).prec == 0)
+		{
+			(*order).space += (**fmt == ' ');
+			(*order).hash += (**fmt == '#');
+			(*order).zero += (**fmt == '0');
+			(*order).neg += (**fmt == '-');
+			(*order).pos += (**fmt == '+');
+		}
+		if ((**fmt >= '1' && **fmt <= '9') || (*fmt)[-1] == '.')
+		{
+			if ((*order).mfw == 0)
+				(*order).mfw = ft_atoi(*fmt);
+			else if ((*order).prec == 0)
+				(*order).prec = ft_atoi(*fmt);
+			while (ft_isdigit(**fmt))
+				(*fmt)++;
+			if ((*order).prec || (*fmt)[-1] != '.')
+				return ;
+		}
+		(*fmt)++;
+	}
+}
+
+void	check_flag(char **fmt, t_order *order)
+{
+	if (**fmt == 'h' || **fmt == 'l' || **fmt == 'L')
+	{
+		if ((*fmt)[1] == **fmt)
+		{
+			(*order).flag[1] = **fmt;
+			(*fmt)++;
+		}
+		(*order).flag[0] = **fmt;
+		(*fmt)++;
+	}
+}
+
+void	check_conv(char **fmt, t_order *order)
 {
 	char	conv[12];
-	char	s;
 	int		i;
 
 	ft_strcpy(conv, "cspdiouxXf %");
-	while (!ft_isalpha(*fmt))
-		fmt++;
-	i = 0;
-	//checkflags"hh h ll l L"
-	while (conv[i])
-	{
-		if (*fmt == conv[i])
-			(*order).conv = *fmt;
-		i++;
-	}
-}
-
-void	check_prefix(char *fmt, t_order *order)
-{
-	while (*fmt != (*order).conv)
-	{
-		if ((*order).zero == 0 && (*order).mfw == 0 && (*order).prec == 0)
-		{
-			if ((*order).conv == 'd' || (*order).conv == 'i' || (*order).conv == 'f')
-			{
-				if (*fmt == '+')
-					(*order).pos = 1;
-				else if (*fmt == ' ')
-					(*order).space = 1;
-			}
-			if (*fmt == '#' && ((*order).conv == 'x' || (*order).conv == 'X' || (*order).conv == 'o'))
-				(*order).hash = 1;
-			else if (*fmt == '-')
-				(*order).neg = 1;
-			else if (*fmt == '0')
-				(*order).zero = 1;
-		}
-		else if (*fmt >= '1' && *fmt <= '9' && (*order).prec == 0)
-			(*order).mfw = (*fmt) - '0';
-		else if (*fmt == '.')
-			(*order).prec = 999;
-		fmt++;
-	}
-}
-
-void	check_flag(char *fmt, t_order *order)
-{
-/* 		else if (*fmt == 'h')
-	{
-		*fmt += 1;
-		if (*fmt == 'h')
-	}
-	else if (*fmt == 'l')
-	{
-		*fmt += 1;
-		if (*fmt == 'l')
-	} */
+	i = -1;
+	while (conv[++i])
+		if (**fmt == conv[i])
+			(*order).conv = **fmt;
 }
