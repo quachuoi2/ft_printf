@@ -4,7 +4,7 @@
 • You must manage the minimum field-width
 • You must manage the precision
 
-todo:	check that flags can only be with its intended conversion
+todo:	flags
 
 
 
@@ -13,17 +13,23 @@ check if fmt = "%" or one odd '%' ("%d%")
 "warning: too many arguments for format"
 
 0 add trailing 0s when min field width is given,
-is ignored when precision in numeric value(non float)
-is ignored when - is given (Mac)
-has to be before mfw
+	is ignored when precision in numeric value(non float)
+	x	has to be before mfw
+	is ignored when - is given (Mac) (?)
 
-- add padding after result
-has to be before mfw
+- move padding behind result
+	x	has to be before mfw
+	only move the padding, the 0s from
 
 1-9 add padding before result (min field width)
-has to be before prec
+	x	has to be before prec
+	this is the total amount of padding
 
 .1-9 precision (padding for decimal point)
+	%f: if mfw is presnt, padding = mfw - prec
+	%rest: if mfw is present, prec is turned into 0 while the other padding in mfw remains ' '
+
+
 
 
 x You have to manage the following conversions: csp

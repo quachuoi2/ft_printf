@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/09 13:25:40 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/09 23:30:50 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ void			check_conv(char **fmt, t_order *order);
 
 //utilities.c
 void			initialize_t_order(t_order *order);
-int				empty_conv(t_order order, char c);
 int				repeated_flag(t_order order);
+void			int_converter(long long int *n, t_order order, char sign);
 
 //print_dif.c
 int				dif(t_order order, va_list ap);
-int				spc_pos(int n, double f, t_order order);
+int				spc_pos(long long int n, long double f, t_order order);
 
 //print_csp.c
 int				csp(t_order order, va_list ap);

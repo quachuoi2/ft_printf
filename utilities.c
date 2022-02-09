@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/09 13:17:49 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/09 23:25:41 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,39 +26,49 @@ void	initialize_t_order(t_order *order)
 	(*order).conv = 0;
 }
 
-int	empty_conv(t_order order, char c)
-{
-	if (order.conv ==  0)
-	{
-		ft_putstr("unknown conversion: ");
-		ft_putchar(c);
-		ft_putchar('\n');
-		return (0);
-	}
-	return (1);
-}
-
 int	repeated_flag(t_order order)
 {
-	int	i;
-	int	n[5];
+	ft_putstr_fd("repeated '", 2);
+	if (order.space > 1)
+		ft_putchar_fd(' ', 2);
+	if (order.hash > 1)
+		ft_putchar_fd('#', 2);
+	if (order.zero > 1)
+		ft_putchar_fd('#', 2);
+	if (order.neg > 1)
+		ft_putchar_fd('-', 2);
+	if (order.pos > 1)
+		ft_putchar_fd('+', 2);
+	ft_putstr_fd("' flag in format\n", 2);
+	return (0);
+}
 
-	i = 0;
-	n[0] = order.space;
-	n[1] = order.hash;
-	n[2] = order.zero;
-	n[3] = order.neg;
-	n[4] = order.pos;
-	while (i < 5)
+void	int_converter(long long int *n, t_order order, char sign)
+{
+	if (sign == 1)
 	{
-		if (n[i] > 1)
-		{
-			ft_putstr("repeated ");
-			ft_putchar('@');
-			ft_putstr(" flag in format\n");
-			return (0);
-		}
-		i++;
+		if (order.flag[0] == 0)
+			*n = (int)*n;
+		else if (order.flag[1] == 'h')
+			*n = (char)*n;
+		else if (order.flag[0] == 'h')
+			*n = (short)*n;
+		else if (order.flag[1] == 'l')
+			return ;
+		else if (order.flag[0] == 'l')
+			*n = (long)*n;
 	}
-	return (1);
+	else
+	{
+		if (order.flag[0] == 0)
+			*n = (unsigned int)*n;
+		else if (order.flag[1] == 'h')
+			*n = (unsigned char)*n;
+		else if (order.flag[0] == 'h')
+			*n = (unsigned short)*n;
+		else if (order.flag[1] == 'l')
+			return ;
+		else if (order.flag[0] == 'l')
+			*n = (unsigned long)*n;
+	}
 }

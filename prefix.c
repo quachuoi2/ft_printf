@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/09 12:33:00 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/09 15:05:28 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,16 @@ void	check_prefix(char **fmt, t_order *order)
 			(*order).neg += (**fmt == '-');
 			(*order).pos += (**fmt == '+');
 		}
-		if (**fmt >= '1' && **fmt <= '9' && (*order).mfw == 0)
+		if ((**fmt >= '1' && **fmt <= '9') || (*fmt)[-1] == '.')
 		{
-			(*order).mfw = ft_atoi(*fmt);
+			if ((*order).mfw == 0)
+				(*order).mfw = ft_atoi(*fmt);
+			else if ((*order).prec == 0)
+				(*order).prec = ft_atoi(*fmt);
 			while (ft_isdigit(**fmt))
 				(*fmt)++;
-		}
-		else if ((*fmt)[-1] == '.' && (*order).prec == 0)
-		{
-			(*order).prec = ft_atoi(*fmt);
-			while (ft_isdigit(**fmt))
-				(*fmt)++;
-			return ;
+			if ((*order).prec || (*fmt)[-1] != '.')
+				return ;
 		}
 		(*fmt)++;
 	}

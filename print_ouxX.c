@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 13:17:52 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/09 13:30:17 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/09 23:27:11 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ int	hash(t_order order)
 
 int	ouxX(t_order order, va_list ap)
 {
-	unsigned int	n;
+	unsigned long long int	n;
 
-	n = va_arg(ap, unsigned int);
+	n = va_arg(ap, unsigned long long int);
+	int_converter(&n, order, 0);
 	if (order.conv == 'u')
 		return (ft_putnbr(n));
 	if (order.conv == 'o')
