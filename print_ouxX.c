@@ -1,29 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   print_ouxX.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/28 12:54:23 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/09 13:30:58 by qnguyen          ###   ########.fr       */
+/*   Created: 2022/02/09 13:17:52 by qnguyen           #+#    #+#             */
+/*   Updated: 2022/02/09 13:30:17 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int	main(void)
+int	hash(t_order order)
 {
-	char	a = 'q';
-	int	i;
-	char	*p;
-
-	p = ft_strdup("mroo");
-	//ft_printf("ft - %cuachuoi%d\n%s - %p\n", a, 2, p, p);
-/* 	i = printf("%+ d\n", 42);
-	printf("%d\n", i); */
-	i = ft_printf("%#X\n", 496848);
-	printf("42: %d\n", i);
-	free(p);
+	if (order.hash)
+	{
+		write(1, "0", 1);
+		if (order.conv == 'o')
+			return (1);
+		write(1, &order.conv, 1);
+		return (2);
+	}
 	return (0);
+}
+
+int	ouxX(t_order order, va_list ap)
+{
+	unsigned int	n;
+
+	n = va_arg(ap, unsigned int);
+	if (order.conv == 'u')
+		return (ft_putnbr(n));
+	if (order.conv == 'o')
+		return (hash(order) + ft_d2base(n, 8, 0, order.conv));
+	return (hash(order) + ft_d2base(n, 16, 0, order.conv));
 }
