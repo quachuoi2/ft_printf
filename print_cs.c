@@ -1,32 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_csp.c                                        :+:      :+:    :+:   */
+/*   print_cs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/09 13:16:45 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/09 13:16:58 by qnguyen          ###   ########.fr       */
+/*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
+/*   Updated: 2022/02/11 11:57:22 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int	csp(t_order order, va_list ap)
+int	cs(t_order order, va_list ap)
 {
-	char			*s;
+	char		*s;
+	char		c;
+	int			i;
 
 	if (order.conv == 'c')
-		return (ft_putchar(va_arg(ap, int)));
+	{
+		c = va_arg(ap, int);
+		i = 1;
+		mfw(i, order);
+		write(1, &c, 1);
+	}
 	else if (order.conv == 's')
 	{
 		s = va_arg(ap, char *);
-		ft_putstr(s);
-		return (ft_strlen(s));
+		if (s == NULL)
+		{
+			write(1, "(null)", 6);
+			return (6);
+		}
+		i = ft_strlen(s);
+		mfw(i, order);
+		write(1, s, i);
 	}
-	else if (order.conv == 'p')
-	{
-		write(1, "0x", 2);
-		return (ft_d2base((intptr_t)va_arg(ap, void *), 16, 0, 'x') + 2);
-	}
+	return (i);
 }

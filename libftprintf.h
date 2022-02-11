@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/09 23:30:50 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/11 18:45:44 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_order
 	int		prec;
 	char	flag[2];
 	char	conv;
+	int		base;
 }				t_order;
 
 //libftprintf.c
@@ -42,17 +43,22 @@ void			check_conv(char **fmt, t_order *order);
 
 //utilities.c
 void			initialize_t_order(t_order *order);
-int				repeated_flag(t_order order);
-void			int_converter(long long int *n, t_order order, char sign);
+//int				repeated_flag(t_order order);
+void			int_converter(unsigned long long int *u, long long *n, t_order order);
+int				ft_isacceptable(char c);
 
 //print_dif.c
 int				dif(t_order order, va_list ap);
-int				spc_pos(long long int n, long double f, t_order order);
 
 //print_csp.c
-int				csp(t_order order, va_list ap);
+int				cs(t_order order, va_list ap);
 
 //print_ouxX.c
-int				ouxX(t_order order, va_list ap);
-int				hash(t_order order);
+int				pouxx(t_order order, va_list ap);
 #endif
+
+//print_flags.c
+void			hash(t_order order);
+void			spc_pos(t_order order);
+int				mfw(int i, t_order order);
+void 			bundling_bundler(int *i, void (*f)(t_order), t_order order);

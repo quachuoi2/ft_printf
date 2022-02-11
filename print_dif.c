@@ -6,41 +6,38 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 13:15:23 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/09 23:35:38 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/11 20:22:39 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int	spc_pos(long long n, long double f, t_order order)
-{
-	if (n >= 0 && f >= 0)
-	{
-		if (order.pos)
-			write(1, "+", 1);
-		else if (order.space)
-			write(1, " ", 1);
-		return (1);
-	}
-	return (0);
-}
-
 int	dif(t_order order, va_list ap)
 {
 	long long int	n;
 	long double		f;
+	int				i;
 
 	f = 0;
 	n = 0;
+	i = (order.space == 1 || order.pos == 1);
 	if (order.conv == 'f')
 	{
 		if (order.flag[0] == 'L')
 			f = va_arg(ap, long double);
 		else
 			f = va_arg(ap, double);
-		return (spc_pos(n, f, order) + ft_putfloat(f, 6));
+		i += ft_diglen(f) + order.prec + (order.prec != 0);
+		bundling_bundler(&i, &spc_pos, order);
+		ft_putfloat(f, order.prec);
 	}
-	n = va_arg(ap, long long int);
-	int_converter(&n, order, 1);
-	return (spc_pos(n, f, order) + ft_putnbr(n));
+	else
+	{
+		n = va_arg(ap, long long int);
+		int_converter(NULL, &n, order);
+		i += ft_diglen(n);
+		bundling_bundler(&i, &spc_pos, order);
+		ft_putnbr(n);
+	}
+	return (i);
 }

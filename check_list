@@ -4,9 +4,7 @@
 • You must manage the minimum field-width
 • You must manage the precision
 
-todo:	flags
-
-
+todo: prec, -
 
 check if fmt = "%" or one odd '%' ("%d%")
 
