@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 18:42:06 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/11 18:43:07 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/14 06:16:39 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,38 @@ void	spc_pos(t_order order)
 		write(1, " ", 1);
 }
 
-int	mfw(int i, t_order order)
+int	prec(int i, t_order *order)
 {
-	int	temp;
+	int	i2;
 
-	temp = i;
-	while (i < order.mfw)
+	i2 = 0;
+	while (i < (*order).mfw)
 	{
-		if (!order.zero)
-			write(1, " ", 1);
-		else
-			write(1, "0", 1);
+		write(1, "0", 1);
 		i++;
+		i2++;
 	}
-	if (temp < order.mfw)
-		return (order.mfw - temp);
-	return (0);
+	return (i2);
 }
 
-void bundling_bundler(int *i, void (*f)(t_order), t_order order)
+int	mfw(int i, t_order order)
 {
-	if (order.zero == 1)
-		f(order);
-	*i += mfw(*i, order);
-	if (order.zero == 0)
-		f(order);
+	int	i2;
+	int	padding;
+
+	if (i < order.mfw)
+	{
+		i2 = 0;
+		padding = order.mfw - ft_greaternum(i, order.prec);
+		while (i2 < padding)
+		{
+			if (!order.zero)
+				write(1, " ", 1);
+			else
+				write(1, "0", 1);
+			i2++;
+		}
+		return (i2);
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/11 19:59:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/14 06:17:47 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	int_converter(unsigned long long int *u, long long *n, t_order order)
 		*u = (unsigned long)*u;
 }
 
-
 int	ft_isacceptable(char c)
 {
 	if (c == ' ' || c == '#' || c == '-' || c == '+' || c == '.'
@@ -63,6 +62,29 @@ int	ft_isacceptable(char c)
 		return (1);
 	return (0);
 }
+
+void	bundling_bundler(int *i, void (*f)(t_order), t_order *order)
+{
+	if ((*order).prec != 0 && (*order).mfw == 0)
+	{
+		(*order).mfw = (*order).prec;
+		(*order).zero = 1;
+	}
+	if ((*order).zero == 1 && f)
+		f(*order);
+	if ((*order).neg == 0)
+		*i += mfw(*i, (*order));
+	*i += prec(*i, order);
+	if ((*order).zero == 0 && f)
+		f(*order);
+}
+
+/* int		print_num(int *i, int n, t_order order)
+{
+	*i += prec(*i, order);
+	ft_putnbr(n);
+} */
+
 /* int	repeated_flag(t_order order)
 {
 	ft_putstr_fd("repeated '", 2);

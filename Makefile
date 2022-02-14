@@ -6,7 +6,7 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/24 10:35:47 by qnguyen           #+#    #+#              #
-#    Updated: 2022/02/11 18:44:23 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/02/14 04:14:42 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,15 +23,16 @@ LIB = -L../libft/ -lft
 
 all: $(NAME)
 
-$(NAME): $(addsuffix .c, $(SRCS)) main.c
+$(NAME):$(addsuffix .c, $(SRCS)) main.c
 	gcc -c $(addsuffix .c, $(SRCS)) $(LIB) $(INCLUDES)
 	cp ../libft/libft.a .
 	mv libft.a $(NAME)
 	ar -rcs $(NAME) $(addsuffix .o, $(SRCS))
 #	gcc main.c -L. -lftprintf -I../libft/
 
-moro:
+m:
 	gcc -g $(addsuffix .c, $(MORO)) -L../libft/ -lft -I../libft/
+
 clean:
 	@/bin/rm -f $(addsuffix .o, $(SRCS))
 

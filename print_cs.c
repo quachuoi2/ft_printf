@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/11 11:57:22 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/14 04:10:22 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	cs(t_order order, va_list ap)
 	{
 		c = va_arg(ap, int);
 		i = 1;
-		mfw(i, order);
+		bundling_bundler(&i, NULL, &order);
 		write(1, &c, 1);
 	}
 	else if (order.conv == 's')
@@ -34,7 +34,7 @@ int	cs(t_order order, va_list ap)
 			return (6);
 		}
 		i = ft_strlen(s);
-		mfw(i, order);
+		bundling_bundler(&i, NULL, &order);
 		write(1, s, i);
 	}
 	return (i);
