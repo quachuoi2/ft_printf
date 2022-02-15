@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 13:15:23 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/14 06:09:01 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/14 18:21:16 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	dif(t_order order, va_list ap)
 
 	f = 0;
 	n = 0;
-	i = (order.space || order.pos );
+	i = 0;
 	if (order.conv == 'f')
 	{
 		if (order.flag[0] == 'L')

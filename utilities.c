@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/14 06:17:47 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/02/15 02:17:14 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	initialize_t_order(t_order *order)
 {
 	(*order).space = 0;
+	(*order).pos = 0;
 	(*order).hash = 0;
 	(*order).zero = 0;
 	(*order).neg = 0;
-	(*order).pos = 0;
 	(*order).mfw = 0;
 	(*order).prec = 0;
 	(*order).flag[0] = 0;
@@ -63,41 +63,24 @@ int	ft_isacceptable(char c)
 	return (0);
 }
 
-void	bundling_bundler(int *i, void (*f)(t_order), t_order *order)
+void	bundling_bundler(int *i, int (*f)(t_order), t_order *order)
 {
-	if ((*order).prec != 0 && (*order).mfw == 0)
+	if ((*order).conv != 'p' && (*order).conv != 'c' && (*order).conv != 's' && (*order).prec != 0)
+		(*order).zero = 0;
+	if ((*order).conv == 'd' || (*order).conv == 'i')
+		(*order).hash = 0;
+	if ((*order).conv == 'x' || (*order).conv == 'X' || (*order).conv == 'o')
 	{
-		(*order).mfw = (*order).prec;
-		(*order).zero = 1;
+		(*order).pos = 0;
+		(*order).space = 0;
 	}
-	if ((*order).zero == 1 && f)
-		f(*order);
-	if ((*order).neg == 0)
-		*i += mfw(*i, (*order));
-	*i += prec(*i, order);
-	if ((*order).zero == 0 && f)
-		f(*order);
+	//if ((*order).neg == 0)
+	*i += mfw(*i, *order, f);
+	*i += zero(*i, *order);
 }
 
 /* int		print_num(int *i, int n, t_order order)
 {
 	*i += prec(*i, order);
 	ft_putnbr(n);
-} */
-
-/* int	repeated_flag(t_order order)
-{
-	ft_putstr_fd("repeated '", 2);
-	if (order.space > 1)
-		ft_putchar_fd(' ', 2);
-	if (order.hash > 1)
-		ft_putchar_fd('#', 2);
-	if (order.zero > 1)
-		ft_putchar_fd('#', 2);
-	if (order.neg > 1)
-		ft_putchar_fd('-', 2);
-	if (order.pos > 1)
-		ft_putchar_fd('+', 2);
-	ft_putstr_fd("' flag in format\n", 2);
-	return (0);
 } */
