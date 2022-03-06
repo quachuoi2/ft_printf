@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/15 02:17:14 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/06 16:22:22 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ void	initialize_t_order(t_order *order)
 	(*order).flag[1] = 0;
 	(*order).conv = 0;
 	(*order).base = 10;
+	(*order).num_of_padding = 0;
+	(*order).num_of_zeros = 0;
+	(*order).negative_num = 0;
+	(*order).func_idx = -1;
 }
 
 void	int_converter(unsigned long long int *u, long long *n, t_order order)
@@ -55,32 +59,43 @@ void	int_converter(unsigned long long int *u, long long *n, t_order order)
 		*u = (unsigned long)*u;
 }
 
-int	ft_isacceptable(char c)
+void	bundling_bundler(int *length, int (*f)(t_order), t_order *order)
 {
-	if (c == ' ' || c == '#' || c == '-' || c == '+' || c == '.'
-		|| ft_isdigit(c))
-		return (1);
-	return (0);
+	*length += mfw(*length, order, f);
+	if ((*order).negative_num)
+	{
+		write(1, "-", 1);
+		*length += 1;
+	}
+	if ((*order).conv != 's' && (*order).conv != 'c')
+		*length += cal_zero(*length, order);
+	put_flag((*order).num_of_zeros, '0');
 }
 
-void	bundling_bundler(int *i, int (*f)(t_order), t_order *order)
+int	check_value(unsigned long long u, long long int *n, t_order *order)
 {
-	if ((*order).conv != 'p' && (*order).conv != 'c' && (*order).conv != 's' && (*order).prec != 0)
-		(*order).zero = 0;
-	if ((*order).conv == 'd' || (*order).conv == 'i')
-		(*order).hash = 0;
-	if ((*order).conv == 'x' || (*order).conv == 'X' || (*order).conv == 'o')
+	int	i;
+
+	i = 0;
+	if (u == 0)
+	{
+		if ((*order).conv == 'p')
+		{
+			write (1, "(nil)", 5);
+			i = 4;
+		}
+		if ((*order).hash == 1)
+			(*order).hash = -1;
+	}
+	if (n != NULL && *n <= 0)
 	{
 		(*order).pos = 0;
 		(*order).space = 0;
+		if (*n < 0 && (*order).conv != 'f')
+		{
+			(*order).negative_num = 1;
+			*n *= -1;
+		}
 	}
-	//if ((*order).neg == 0)
-	*i += mfw(*i, *order, f);
-	*i += zero(*i, *order);
+	return (i);
 }
-
-/* int		print_num(int *i, int n, t_order order)
-{
-	*i += prec(*i, order);
-	ft_putnbr(n);
-} */

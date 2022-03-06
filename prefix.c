@@ -6,24 +6,27 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/02/14 03:47:01 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/06 16:13:48 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
+
+void	helping_helper(t_order *order, char fmt)
+{
+	(*order).space += (fmt == ' ');
+	(*order).hash += (fmt == '#');
+	(*order).zero += (fmt == '0');
+	(*order).neg += (fmt == '-');
+	(*order).pos += (fmt == '+');
+}
 
 void	check_prefix(char **fmt, t_order *order)
 {
 	while (ft_isacceptable(**fmt))
 	{
 		if ((*order).mfw == 0 && (*order).prec == 0)
-		{
-			(*order).space += (**fmt == ' ');
-			(*order).hash += (**fmt == '#');
-			(*order).zero += (**fmt == '0');
-			(*order).neg += (**fmt == '-');
-			(*order).pos += (**fmt == '+');
-		}
+			helping_helper(order, **fmt);
 		if ((**fmt >= '1' && **fmt <= '9') || **fmt == '.')
 		{
 			if (**fmt != '.')
@@ -31,7 +34,7 @@ void	check_prefix(char **fmt, t_order *order)
 			else
 			{
 				(*fmt)++;
-				if (!ft_atoi(*fmt))
+				if (ft_atoi(*fmt) == 0)
 					(*order).prec = -1;
 				else
 					(*order).prec = ft_atoi(*fmt);
@@ -64,21 +67,42 @@ void	check_conv(char **fmt, t_order *order)
 {
 	char	conv[12];
 	int		i;
+	char	*s;
 
-	ft_strcpy(conv, "cspdiouxXf %\0");
-	i = 0;
-	while (conv[i])
+	ft_strcpy(conv, "csdfpouxX %\0");
+	i = -1;
+	while (conv[++i])
 	{
 		if (**fmt == conv[i])
+		{
 			(*order).conv = **fmt;
-		i++;
+			if (i < 4)
+				(*order).func_idx = i;
+			else
+				(*order).func_idx = 4;
+		}
 	}
-	if (**fmt == 'o')
+	if (**fmt == 'i')
+	{
+		(*order).conv = 'd';
+		(*order).func_idx = 2;
+	}
+}
+
+void	conversion_appropriation(t_order *order)
+{
+	if ((*order).conv == 'o')
 		(*order).base = 8;
-	else if (**fmt == 'x' || **fmt == 'X' || **fmt == 'p')
+	else if ((*order).conv == 'x' || (*order).conv == 'X'
+		|| (*order).conv == 'p')
 		(*order).base = 16;
-	if (**fmt == 'f' && (*order).prec == 0)
+	if ((*order).conv == 'f' && (*order).prec == 0)
 		(*order).prec = 6;
-	else if ((*order).prec == -1)
+	else if ((*order).conv == 'f' && (*order).prec == -1)
 		(*order).prec = 0;
+	if ((*order).conv == 'p')
+		(*order).hash = 1;
+	if (((*order).conv != 'p' && (*order).conv != 'c' && (*order).conv != 's'
+			&& (*order).prec != 0) || ((*order).prec == 0 && (*order).neg == 1))
+		(*order).zero = 0;
 }
