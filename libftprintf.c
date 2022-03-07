@@ -6,26 +6,28 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/06 16:21:09 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/07 17:53:36 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-t_function	*g_function[10] = {put_c, put_s, put_d, put_f, put_pouxx};
+t_function	*g_function_arr[10] = {put_c, put_s, put_d, put_f, put_pbouxx};
 
 int	convert(t_order *order, va_list ap, char *og_fmt, char *fmt)
 {
 	int	i;
 
 	if ((*order).conv != 0 && (*order).conv != '%')
-		return (g_function[(*order).func_idx](order, ap));
+		return (g_function_arr[(*order).func_idx](order, ap));
 	else if ((*order).conv == '%')
 		return (ft_putchar('%'));
 	i = 0;
 	while (og_fmt <= fmt && *og_fmt)
 	{
-		if (*og_fmt != '0')
+		if (*og_fmt == '*')
+			ft_putnbr((*order).mfw);
+		else if (*og_fmt != '0')
 			write(1, og_fmt, 1);
 		if (*og_fmt == '.' && !ft_isdigit(og_fmt[1]))
 			write(1, "0", 1);
@@ -44,7 +46,7 @@ int	take_subway_order(char **fmt, va_list ap, t_order *order)
 	if (!**fmt)
 		return (-1);
 	initialize_t_order(order);
-	check_prefix(fmt, order);
+	check_prefix(fmt, order, ap);
 	check_flag(fmt, order);
 	check_conv(fmt, order);
 	conversion_appropriation(order);

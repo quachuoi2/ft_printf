@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/06 16:22:22 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/06 23:11:35 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,15 @@ void	bundling_bundler(int *length, int (*f)(t_order), t_order *order)
 
 int	check_value(unsigned long long u, long long int *n, t_order *order)
 {
-	int	i;
-
-	i = 0;
 	if (u == 0)
 	{
+		if ((*order).hash == 1)
+			(*order).hash = -1;
 		if ((*order).conv == 'p')
 		{
 			write (1, "(nil)", 5);
-			i = 4;
+			return (4);
 		}
-		if ((*order).hash == 1)
-			(*order).hash = -1;
 	}
 	if (n != NULL && *n <= 0)
 	{
@@ -94,8 +91,8 @@ int	check_value(unsigned long long u, long long int *n, t_order *order)
 		if (*n < 0 && (*order).conv != 'f')
 		{
 			(*order).negative_num = 1;
-			*n *= -1;
+			*n = -*n;
 		}
 	}
-	return (i);
+	return (0);
 }

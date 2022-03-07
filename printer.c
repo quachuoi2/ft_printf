@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/06 16:07:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/07 17:53:31 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,19 @@ int	put_s(t_order *order, va_list ap)
 
 	s = va_arg(ap, char *);
 	if (s == NULL)
-	{
-		write(1, "(null)", 6);
-		return (6);
-	}
+		return (ft_putstr("(null)"));
 	str_len = ft_strlen(s);
 	if ((*order).prec > 0 && (*order).prec < str_len)
 		length = (*order).prec;
 	else
-		length = ft_strlen(s);
+		length = str_len;
 	bundling_bundler(&length, NULL, order);
-	if ((*order).prec > 0 && (*order).prec < str_len)
-		write(1, s, (*order).prec);
-	else
-		ft_putstr(s);
+	if ((*order).prec > 0)
+		write(1, s, ft_smallernum((*order).prec, str_len));
+	else if ((*order).mfw)
+		put_flag((*order).mfw - str_len, ' ');
+	else if ((*order).prec == -1)
+		return (0);
 	return (length);
 }
 
@@ -80,6 +79,8 @@ int	put_f(t_order *order, va_list ap)
 		f = va_arg(ap, long double);
 	else
 		f = va_arg(ap, double);
+	if (1 / f < 0 && f == 0)
+		(*order).negative_num = 1;
 	length += check_value(0, (long long int *)&f, order)
 		+ ft_diglen(f) + (*order).prec + ((*order).prec != 0);
 	bundling_bundler(&length, &spc_pos, order);
@@ -87,7 +88,7 @@ int	put_f(t_order *order, va_list ap)
 	return (length);
 }
 
-int	put_pouxx(t_order *order, va_list ap)
+int	put_pbouxx(t_order *order, va_list ap)
 {
 	int						length;
 	unsigned long long int	u;

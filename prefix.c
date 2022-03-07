@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/06 16:13:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/07 17:53:03 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	helping_helper(t_order *order, char fmt)
 	(*order).pos += (fmt == '+');
 }
 
-void	check_prefix(char **fmt, t_order *order)
+void	check_prefix(char **fmt, t_order *order, va_list ap)
 {
 	while (ft_isacceptable(**fmt))
 	{
@@ -29,22 +29,19 @@ void	check_prefix(char **fmt, t_order *order)
 			helping_helper(order, **fmt);
 		if ((**fmt >= '1' && **fmt <= '9') || **fmt == '.')
 		{
-			if (**fmt != '.')
-				(*order).mfw = ft_atoi(*fmt);
-			else
-			{
-				(*fmt)++;
-				if (ft_atoi(*fmt) == 0)
-					(*order).prec = -1;
-				else
-					(*order).prec = ft_atoi(*fmt);
-			}
+			if (**fmt != '.' && (*order).mfw)
+				return ;
+			mfw_prec_assigner(order, fmt, ap);
 			while (ft_isdigit(**fmt))
 				(*fmt)++;
 			if (**fmt != '.')
 				return ;
 			(*fmt)--;
 		}
+		else if (**fmt == '@')
+			write_color(fmt);
+		else if (**fmt == '*')
+			a_wild_mfw_appeared(order, ap, 'm');
 		(*fmt)++;
 	}
 }
@@ -67,9 +64,8 @@ void	check_conv(char **fmt, t_order *order)
 {
 	char	conv[12];
 	int		i;
-	char	*s;
 
-	ft_strcpy(conv, "csdfpouxX %\0");
+	ft_strcpy(conv, "csdfpbouxX %\0");
 	i = -1;
 	while (conv[++i])
 	{
@@ -96,6 +92,8 @@ void	conversion_appropriation(t_order *order)
 	else if ((*order).conv == 'x' || (*order).conv == 'X'
 		|| (*order).conv == 'p')
 		(*order).base = 16;
+	else if ((*order).conv == 'b')
+		(*order).base = 2;
 	if ((*order).conv == 'f' && (*order).prec == 0)
 		(*order).prec = 6;
 	else if ((*order).conv == 'f' && (*order).prec == -1)

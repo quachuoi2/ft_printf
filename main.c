@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 12:54:23 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/06 16:01:09 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/07 17:59:02 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,14 +349,11 @@ void bundle()
 int	main(void)
 {
 	//bundle();
-  	char *p = ft_strdup("moro");
+	char *p = ft_strdup("moro");
 	int i;
 
-	int a = 3;
-	i = printf("%p", &a);
-	printf("\nog: %d\n\n", i);
-	i = ft_printf("%p", &a);
-	ft_printf("\n42: %d\n", i);
+	i = ft_printf("moromoro %030b\n", 1997);
+	ft_printf("42: %d\n", i);
 	free(p);
 	return (0);
 }

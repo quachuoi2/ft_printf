@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 18:42:06 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/06 16:19:37 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/07 17:55:51 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	hash(t_order order)
 		write(1, "0", 1);
 		if (order.conv != 'o')
 		{
+			if (order.conv == 'b')
+				write(1, "b", 1);
 			if (order.conv == 'X')
 				write(1, "X", 1);
 			else
