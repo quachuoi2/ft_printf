@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/07 17:35:20 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/09 15:33:01 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	a_wild_mfw_appeared(t_order *order, va_list ap, char mfw_prec)
 	n = va_arg(ap, int);
 	if (n < 0)
 	{
+		if ((*order).mfw)
+			return ;
 		n = -n;
 		(*order).neg = 1;
 	}

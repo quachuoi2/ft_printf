@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/07 17:53:31 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/09 14:54:17 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ int	put_s(t_order *order, va_list ap)
 	bundling_bundler(&length, NULL, order);
 	if ((*order).prec > 0)
 		write(1, s, ft_smallernum((*order).prec, str_len));
-	else if ((*order).mfw)
+	else if ((*order).mfw != 0 && (*order).prec == -1)
 		put_flag((*order).mfw - str_len, ' ');
-	else if ((*order).prec == -1)
+	else if ((*order).mfw == 0 && (*order).prec == -1)
 		return (0);
+	else
+		write(1, s, str_len);
 	return (length);
 }
 
@@ -91,6 +93,7 @@ int	put_f(t_order *order, va_list ap)
 int	put_pbouxx(t_order *order, va_list ap)
 {
 	int						length;
+	int						dig_len;
 	unsigned long long int	u;
 
 	length = 0;
@@ -100,13 +103,17 @@ int	put_pbouxx(t_order *order, va_list ap)
 		u = va_arg(ap, unsigned long long int);
 	if ((*order).conv != 'p')
 		int_converter(&u, 0, *order);
-	length += check_value(u, 0, order) + ft_udiglen(u, (*order).base);
+	dig_len = ft_udiglen(u, (*order).base);
+	length += check_value(u, 0, order) + dig_len;
 	bundling_bundler(&length, &hash, order);
 	if (u == 0 && (*order).prec == -1 && (*order).conv != 'p')
 		if ((*order).conv != 'o'
 			|| ((*order).conv == 'o' && (*order).hash == 0))
 			return (length - 1);
-	if ((*order).conv != 'p' || u != 0)
+	if ((*order).conv != 'p' || (*order).prec != -1)
+	{
 		ft_d2base(u, (*order).base, (*order).conv);
-	return (length);
+		return (length);
+	}
+	return (length - dig_len);
 }

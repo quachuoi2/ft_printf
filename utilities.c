@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/06 23:11:35 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/09 13:58:38 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,10 @@ int	check_value(unsigned long long u, long long int *n, t_order *order)
 {
 	if (u == 0)
 	{
-		if ((*order).hash == 1)
+		if ((*order).hash == 1 && (*order).conv != 'p')
 			(*order).hash = -1;
-		if ((*order).conv == 'p')
-		{
-			write (1, "(nil)", 5);
-			return (4);
-		}
 	}
-	if (n != NULL && *n <= 0)
+	if (n != NULL && *n < 0)
 	{
 		(*order).pos = 0;
 		(*order).space = 0;

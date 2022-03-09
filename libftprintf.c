@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/07 17:53:36 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/09 15:35:01 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	take_subway_order(char **fmt, va_list ap, t_order *order)
 	og_fmt = *fmt;
 	(*fmt)++;
 	if (!**fmt)
-		return (-1);
+		return (0);
 	initialize_t_order(order);
 	check_prefix(fmt, order, ap);
 	check_flag(fmt, order);

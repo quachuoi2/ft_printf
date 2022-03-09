@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/07 17:53:03 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/09 15:33:48 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ void	check_prefix(char **fmt, t_order *order, va_list ap)
 			helping_helper(order, **fmt);
 		if ((**fmt >= '1' && **fmt <= '9') || **fmt == '.')
 		{
-			if (**fmt != '.' && (*order).mfw)
-				return ;
 			mfw_prec_assigner(order, fmt, ap);
-			while (ft_isdigit(**fmt))
+			while (ft_isdigit(**fmt) || **fmt == '-' || **fmt == '+')
 				(*fmt)++;
 			if (**fmt != '.')
 				return ;
@@ -62,7 +60,7 @@ void	check_flag(char **fmt, t_order *order)
 
 void	check_conv(char **fmt, t_order *order)
 {
-	char	conv[12];
+	char	conv[13];
 	int		i;
 
 	ft_strcpy(conv, "csdfpbouxX %\0");
@@ -103,4 +101,9 @@ void	conversion_appropriation(t_order *order)
 	if (((*order).conv != 'p' && (*order).conv != 'c' && (*order).conv != 's'
 			&& (*order).prec != 0) || ((*order).prec == 0 && (*order).neg == 1))
 		(*order).zero = 0;
+	if ((*order).prec < -1)
+	{
+		(*order).mfw = -(*order).prec;
+		(*order).neg = 1;
+	}
 }
