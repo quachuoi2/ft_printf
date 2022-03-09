@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/07 17:53:31 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/09 18:47:32 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ int	put_s(t_order *order, va_list ap)
 	bundling_bundler(&length, NULL, order);
 	if ((*order).prec > 0)
 		write(1, s, ft_smallernum((*order).prec, str_len));
-	else if ((*order).mfw)
+	else if ((*order).mfw != 0 && (*order).prec == -1)
 		put_flag((*order).mfw - str_len, ' ');
-	else if ((*order).prec == -1)
+	else if ((*order).mfw == 0 && (*order).prec == -1)
 		return (0);
+	else
+		write(1, s, str_len);
 	return (length);
 }
 

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/07 17:53:44 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/07 18:15:06 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ typedef struct s_order
 	int		num_of_padding;
 	int		num_of_zeros;
 	int		negative_num;
+	int		func_idx;
 	char	flag[2];
 	char	conv;
-	int		func_idx;
 }				t_order;
 
 typedef int	t_function(t_order *order, va_list ap);

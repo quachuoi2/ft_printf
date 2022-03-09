@@ -6,7 +6,7 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/24 10:35:47 by qnguyen           #+#    #+#              #
-#    Updated: 2022/03/07 17:58:13 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/03/09 18:54:06 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,9 @@ LIB = -lft
 
 all: $(NAME)
 
-$(NAME):$(addsuffix .c, $(SRCS)) main.c
+$(NAME):$(addsuffix .c, $(SRCS))
 	make -C $(LIB_DIR)
-	gcc -c $(addsuffix .c, $(SRCS)) $(FLAGS) -L$(LIB_DIR) $(LIB) -I$(LIB_DIR)
+	gcc -c $(addsuffix .c, $(SRCS)) $(FLAGS) -I$(LIB_DIR)
 	cp $(LIB_DIR)libft.a .
 	mv libft.a $(NAME)
 	ar -rcs $(NAME) $(addsuffix .o, $(SRCS))
@@ -32,7 +32,7 @@ m:
 
 clean:
 	@/bin/rm -f $(addsuffix .o, $(SRCS))
-
+	@make -C $(LIB_DIR) clean
 fclean: clean
 	@/bin/rm -f $(NAME)
 	@make -C $(LIB_DIR) fclean
