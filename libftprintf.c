@@ -6,22 +6,25 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/09 15:35:01 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/14 22:10:07 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-t_function	*g_function_arr[10] = {put_c, put_s, put_d, put_f, put_pbouxx};
+t_function	*g_function_arr[5] = {put_c, put_s, put_d, put_f, put_pbouxx};
 
 int	convert(t_order *order, va_list ap, char *og_fmt, char *fmt)
 {
 	int	i;
 
-	if ((*order).conv != 0 && (*order).conv != '%')
-		return (g_function_arr[(*order).func_idx](order, ap));
-	else if ((*order).conv == '%')
-		return (ft_putchar('%'));
+	if ((*order).conv != 0)
+	{
+		i = g_function_arr[(*order).func_idx](order, ap);
+		if ((*order).neg)
+			put_flag((*order).num_of_padding, ' ');
+		return (i);
+	}
 	i = 0;
 	while (og_fmt <= fmt && *og_fmt)
 	{
@@ -55,10 +58,12 @@ int	take_subway_order(char **fmt, va_list ap, t_order *order)
 
 int	ft_printf(const char *fmt, ...)
 {
+	char	*default_color;
 	int		char_printed;
 	va_list	ap;
 	t_order	order;
 
+	default_color = ft_strdup("\x1b[0m");
 	va_start(ap, fmt);
 	char_printed = 0;
 	while (*fmt)
@@ -66,15 +71,17 @@ int	ft_printf(const char *fmt, ...)
 		if (*fmt == '%')
 		{
 			char_printed += take_subway_order((char **)&fmt, ap, &order);
-			if (order.neg)
-				put_flag(order.num_of_padding, ' ');
+			if (order.color)
+				write(1, default_color, 5);
 		}
+		else if (*fmt == '@')
+			write_color((char **)&fmt, default_color);
 		else
 			char_printed += ft_putchar(*fmt);
-		if (*fmt == '\0')
-			break ;
-		fmt++;
+		if (*fmt)
+			fmt++;
 	}
+	free(default_color);
 	va_end(ap);
 	return (char_printed);
 }

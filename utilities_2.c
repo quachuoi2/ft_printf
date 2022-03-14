@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/09 15:33:01 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/14 21:50:33 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,6 @@ void	put_flag(int ammount, char c)
 {
 	while (ammount-- > 0)
 		write(1, &c, 1);
-}
-
-int	ft_isacceptable(char c)
-{
-	if (c == ' ' || c == '#' || c == '-' || c == '+' || c == '.'
-		|| c == '@' || c == '*' || ft_isdigit(c))
-		return (1);
-	return (0);
 }
 
 void	a_wild_mfw_appeared(t_order *order, va_list ap, char mfw_prec)
@@ -66,19 +58,24 @@ void	mfw_prec_assigner(t_order *order, char **fmt, va_list ap)
 		(*order).mfw = ft_atoi(*fmt);
 }
 
-void	write_color(char **fmt)
+void	write_color(char **fmt, char *default_color)
 {
+	char	*color;
+
 	(*fmt)++;
 	if (**fmt == 'r')
-		write(1, "\x1B[31m", 5);
+		color = "\x1B[31m";
 	else if (**fmt == 'g')
-		write(1, "\x1b[32m", 5);
+		color = "\x1B[32m";
 	else if (**fmt == 'b')
-		write(1, "\x1B[34m", 5);
+		color = "\x1B[34m";
 	else if (**fmt == 'y')
-		write(1, "\x1B[33m", 5);
+		color = "\x1B[33m";
 	else if (**fmt == 'w')
-		write(1, "\x1b[37m", 5);
+		color = "\x1B[37m";
 	else if (**fmt == 'd')
-		write(1, "\x1b[0m", 5);
+		color = "\x1B[0m";
+	if (default_color)
+		ft_strcpy(default_color, color);
+	write(1, color, 5);
 }

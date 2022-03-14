@@ -6,43 +6,31 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 18:42:06 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/09 13:38:54 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/14 21:29:52 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int	hash(t_order order)
+int	hash_pos_spc(t_order *order)
 {
-	if (order.hash > 0)
+	if ((*order).hash > 0)
 	{
-		write(1, "0", 1);
-		if (order.conv != 'o')
-		{
-			if (order.conv == 'b')
-				write(1, "b", 1);
-			if (order.conv == 'X')
-				write(1, "X", 1);
-			else
-				write(1, "x", 1);
-			return (2);
-		}
-		return (1);
+		if ((*order).conv == 'b')
+			write(1, "0b", 2);
+		else if ((*order).conv == 'X')
+			write(1, "0X", 2);
+		else if ((*order).conv == 'x' || (*order).conv == 'p')
+			write(1, "0x", 2);
+		else if ((*order).conv == 'o')
+			write(1, "0", 1);
+		return (2 - ((*order).conv == 'o'));
 	}
-	return (0);
-}
-
-int	spc_pos(t_order order)
-{
-	if (order.pos > 0 || order.space > 0)
-	{
-		if (order.pos)
-			write(1, "+", 1);
-		else
-			write(1, " ", 1);
-		return (1);
-	}
-	return (0);
+	if ((*order).pos && (*order).conv == 'd')
+		write(1, "+", 1);
+	else if ((*order).space && (*order).conv == 'd')
+		write(1, " ", 1);
+	return (((*order).pos || (*order).space) * ((*order).conv == 'd'));
 }
 
 int	cal_zero(int length, t_order *order)
@@ -89,7 +77,7 @@ int	cal_padding(int length, t_order *order)
 	return ((*order).num_of_padding);
 }
 
-int	mfw(int length, t_order *order, int (*f)(t_order))
+int	mfw(int length, t_order *order, int (*f)(t_order *))
 {
 	int	i;
 
@@ -100,7 +88,7 @@ int	mfw(int length, t_order *order, int (*f)(t_order))
 			&& (*order).conv != 's' && (*order).conv != 'c')
 		{
 			if (f)
-				i += f((*order));
+				i += f((order));
 			if ((*order).conv == 'o')
 				length += i;
 			i += cal_zero(length, order);
@@ -111,6 +99,6 @@ int	mfw(int length, t_order *order, int (*f)(t_order))
 			put_flag((*order).num_of_padding, ' ');
 	}
 	if (f)
-		i += f((*order));
+		i += f((order));
 	return (i);
 }

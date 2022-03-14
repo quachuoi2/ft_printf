@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/09 13:58:38 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/14 22:05:29 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,37 +29,38 @@ void	initialize_t_order(t_order *order)
 	(*order).num_of_zeros = 0;
 	(*order).negative_num = 0;
 	(*order).func_idx = -1;
+	(*order).color = 0;
 }
 
-void	int_converter(unsigned long long int *u, long long *n, t_order order)
+void	int_converter(unsigned long long int *u, long long *n, t_order *order)
 {
 	if (n != NULL)
 	{
-		if (order.flag[0] == 0)
+		if ((*order).flag[0] == 0)
 			*n = (int)*n;
-		else if (order.flag[1] == 'h')
+		else if ((*order).flag[1] == 'h')
 			*n = (char)*n;
-		else if (order.flag[0] == 'h')
+		else if ((*order).flag[0] == 'h')
 			*n = (short)*n;
-		else if (order.flag[1] == 'l')
+		else if ((*order).flag[1] == 'l')
 			return ;
-		else if (order.flag[0] == 'l')
+		else if ((*order).flag[0] == 'l')
 			*n = (long)*n;
 		return ;
 	}
-	if (order.flag[0] == 0)
+	if ((*order).flag[0] == 0)
 		*u = (unsigned int)*u;
-	else if (order.flag[1] == 'h')
+	else if ((*order).flag[1] == 'h')
 		*u = (unsigned char)*u;
-	else if (order.flag[0] == 'h')
+	else if ((*order).flag[0] == 'h')
 		*u = (unsigned short)*u;
-	else if (order.flag[1] == 'l')
+	else if ((*order).flag[1] == 'l')
 		return ;
-	else if (order.flag[0] == 'l')
+	else if ((*order).flag[0] == 'l')
 		*u = (unsigned long)*u;
 }
 
-void	bundling_bundler(int *length, int (*f)(t_order), t_order *order)
+void	bundling_bundler(int *length, int (*f)(t_order *), t_order *order)
 {
 	*length += mfw(*length, order, f);
 	if ((*order).negative_num)

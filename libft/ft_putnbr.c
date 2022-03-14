@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 05:48:03 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/06 07:06:03 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/14 17:24:01 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	ft_putnbr(long long n)
 {
-	if (n == (long long int)-9223372036854775808u)
-	{
-		ft_putstr("-9223372036854775808");
-		return ;
-	}
+	unsigned long long	u;
+
 	if (n < 0)
 	{
-		ft_putchar('-');
-		n *= -1;
+		write(1, "-", 1);
+		n++;
+		u = (unsigned long long)-n + 1;
 	}
-	if (n > 9)
-		ft_putnbr(n / 10);
-	ft_putchar(n % 10 + '0');
+	else
+		u = (unsigned long long)n;
+	if (u > 9)
+		ft_putnbr(u / 10);
+	ft_putchar(u % 10 + '0');
 }
 
 /* void	ft_putnbr(long long n)

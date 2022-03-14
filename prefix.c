@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/09 15:33:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/14 22:04:39 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void	helping_helper(t_order *order, char fmt)
 
 void	check_prefix(char **fmt, t_order *order, va_list ap)
 {
-	while (ft_isacceptable(**fmt))
+	while (**fmt == ' ' || **fmt == '#' || **fmt == '-' || **fmt == '+'
+		|| **fmt == '.' || **fmt == '@' || **fmt == '*' || ft_isdigit(**fmt))
 	{
 		if ((*order).mfw == 0 && (*order).prec == 0)
 			helping_helper(order, **fmt);
@@ -37,7 +38,10 @@ void	check_prefix(char **fmt, t_order *order, va_list ap)
 			(*fmt)--;
 		}
 		else if (**fmt == '@')
-			write_color(fmt);
+		{
+			(*order).color = 1;
+			write_color(fmt, 0);
+		}
 		else if (**fmt == '*')
 			a_wild_mfw_appeared(order, ap, 'm');
 		(*fmt)++;
@@ -81,6 +85,8 @@ void	check_conv(char **fmt, t_order *order)
 		(*order).conv = 'd';
 		(*order).func_idx = 2;
 	}
+	else if (**fmt == '%')
+		(*order).func_idx = 0;
 }
 
 void	conversion_appropriation(t_order *order)
