@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/14 21:50:33 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/15 22:58:35 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,23 @@ void	write_color(char **fmt, char *default_color)
 	if (default_color)
 		ft_strcpy(default_color, color);
 	write(1, color, 5);
+}
+
+int	grouping_grouper(char **fmt, va_list ap,
+			char *default_color, t_order *order)
+{
+	int	char_printed;
+
+	char_printed = 0;
+	if (**fmt == '%')
+	{
+		char_printed = take_subway_order(fmt, ap, order);
+		if ((*order).color)
+			write(1, default_color, 5);
+	}
+	else if (**fmt == '@')
+		write_color((char **)fmt, default_color);
+	else
+		char_printed += ft_putchar(**fmt);
+	return (char_printed);
 }

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/14 22:10:07 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/15 22:57:46 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,8 @@ int	ft_printf(const char *fmt, ...)
 	char_printed = 0;
 	while (*fmt)
 	{
-		if (*fmt == '%')
-		{
-			char_printed += take_subway_order((char **)&fmt, ap, &order);
-			if (order.color)
-				write(1, default_color, 5);
-		}
-		else if (*fmt == '@')
-			write_color((char **)&fmt, default_color);
-		else
-			char_printed += ft_putchar(*fmt);
+		char_printed
+			+= grouping_grouper((char **)&fmt, ap, default_color, &order);
 		if (*fmt)
 			fmt++;
 	}

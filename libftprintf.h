@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/14 22:04:12 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/15 22:58:14 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	put_flag(int ammount, char c);
 void	a_wild_mfw_appeared(t_order *order, va_list ap, char m_p);
 void	mfw_prec_assigner(t_order *order, char **fmt, va_list ap);
 void	write_color(char **fmt, char *default_color);
+int		grouping_grouper(char **fmt, va_list ap,
+			char *default_color, t_order *order);
 
 //printer.c
 int		put_c(t_order *order, va_list ap);
