@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/15 22:58:14 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/17 20:10:02 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@
 
 typedef struct s_order
 {
-	char	space;
-	char	hash;
-	char	zero;
-	char	neg;
-	char	pos;
-	char	base;
-	char	negative_num;
-	char	color;
-	char	conv;
+	int		space;
+	int		hash;
+	int		zero;
+	int		neg;
+	int		pos;
+	int		base;
+	int		negative_num;
+	int		color;
+	int		conv;
 	int		mfw;
 	int		prec;
 	int		num_of_padding;
@@ -40,9 +40,13 @@ typedef struct s_order
 typedef int	t_function(t_order *order, va_list ap);
 
 //libftprintf.c
+int		print_error(t_order *order, char *og_fmt, char *fmt,
+			char (*default_color)[5]);
+int		take_subway_order(char **fmt, va_list ap, t_order *order,
+			char (*default_color)[5]);
+int		grouping_grouper(char **fmt, va_list ap,
+			char (*default_color)[5], t_order *order);
 int		ft_printf(const char *format, ...);
-int		convert(t_order *order, va_list ap, char *og_fmt, char *fmt);
-int		take_subway_order(char **fmt, va_list ap, t_order *order);
 
 //prefix.c
 void	helping_helper(t_order *order, char fmt);
@@ -61,9 +65,7 @@ int		check_value(unsigned long long u, long long int *n, t_order *order);
 void	put_flag(int ammount, char c);
 void	a_wild_mfw_appeared(t_order *order, va_list ap, char m_p);
 void	mfw_prec_assigner(t_order *order, char **fmt, va_list ap);
-void	write_color(char **fmt, char *default_color);
-int		grouping_grouper(char **fmt, va_list ap,
-			char *default_color, t_order *order);
+void	write_color(char **fmt, char (*default_color)[5]);
 
 //printer.c
 int		put_c(t_order *order, va_list ap);

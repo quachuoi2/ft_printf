@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/15 22:57:46 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/17 20:07:41 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,14 @@
 
 t_function	*g_function_arr[5] = {put_c, put_s, put_d, put_f, put_pbouxx};
 
-int	convert(t_order *order, va_list ap, char *og_fmt, char *fmt)
+int	print_error(t_order *order, char *og_fmt, char *fmt,
+		char (*default_color)[5])
 {
 	int	i;
 
-	if ((*order).conv != 0)
-	{
-		i = g_function_arr[(*order).func_idx](order, ap);
-		if ((*order).neg)
-			put_flag((*order).num_of_padding, ' ');
-		return (i);
-	}
-	i = 0;
 	while (og_fmt <= fmt && *og_fmt)
 	{
+		write(1, *default_color, 5);
 		if (*og_fmt == '*')
 			ft_putnbr((*order).mfw);
 		else if (*og_fmt != '0')
@@ -40,9 +34,11 @@ int	convert(t_order *order, va_list ap, char *og_fmt, char *fmt)
 	return (i);
 }
 
-int	take_subway_order(char **fmt, va_list ap, t_order *order)
+int	take_subway_order(char **fmt, va_list ap, t_order *order,
+			char (*default_color)[5])
 {
 	char	*og_fmt;
+	int		i;
 
 	og_fmt = *fmt;
 	(*fmt)++;
@@ -53,27 +49,52 @@ int	take_subway_order(char **fmt, va_list ap, t_order *order)
 	check_flag(fmt, order);
 	check_conv(fmt, order);
 	conversion_appropriation(order);
-	return (convert(order, ap, og_fmt, *fmt));
+	if ((*order).conv != 0)
+	{
+		i = g_function_arr[(*order).func_idx](order, ap);
+		if ((*order).neg)
+			put_flag((*order).num_of_padding, ' ');
+		return (i);
+	}
+	return (print_error(order, og_fmt, *fmt, default_color));
+}
+
+int	grouping_grouper(char **fmt, va_list ap,
+			char (*default_color)[5], t_order *order)
+{
+	int	char_printed;
+
+	char_printed = 0;
+	if (**fmt == '%')
+	{
+		char_printed = take_subway_order(fmt, ap, order, default_color);
+		if ((*order).color)
+			write(1, *default_color, 5);
+	}
+	else if (**fmt == '$')
+		write_color((char **)fmt, default_color);
+	else
+		char_printed += ft_putchar(**fmt);
+	return (char_printed);
 }
 
 int	ft_printf(const char *fmt, ...)
 {
-	char	*default_color;
+	char	default_color[5];
 	int		char_printed;
 	va_list	ap;
 	t_order	order;
 
-	default_color = ft_strdup("\x1b[0m");
+	ft_strcpy(default_color, "\x1b[0m");
 	va_start(ap, fmt);
 	char_printed = 0;
 	while (*fmt)
 	{
-		char_printed
-			+= grouping_grouper((char **)&fmt, ap, default_color, &order);
+		char_printed += grouping_grouper((char **)&fmt, ap,
+				&default_color, &order);
 		if (*fmt)
 			fmt++;
 	}
-	free(default_color);
 	va_end(ap);
 	return (char_printed);
 }

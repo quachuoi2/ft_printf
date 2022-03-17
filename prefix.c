@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/14 22:04:39 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/17 19:32:23 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	helping_helper(t_order *order, char fmt)
 void	check_prefix(char **fmt, t_order *order, va_list ap)
 {
 	while (**fmt == ' ' || **fmt == '#' || **fmt == '-' || **fmt == '+'
-		|| **fmt == '.' || **fmt == '@' || **fmt == '*' || ft_isdigit(**fmt))
+		|| **fmt == '.' || **fmt == '$' || **fmt == '*' || ft_isdigit(**fmt))
 	{
 		if ((*order).mfw == 0 && (*order).prec == 0)
 			helping_helper(order, **fmt);
@@ -37,7 +37,7 @@ void	check_prefix(char **fmt, t_order *order, va_list ap)
 				return ;
 			(*fmt)--;
 		}
-		else if (**fmt == '@')
+		else if (**fmt == '$')
 		{
 			(*order).color = 1;
 			write_color(fmt, 0);
@@ -67,6 +67,12 @@ void	check_conv(char **fmt, t_order *order)
 	char	conv[13];
 	int		i;
 
+	if (**fmt == 'i')
+	{
+		(*order).conv = 'd';
+		(*order).func_idx = 2;
+		return ;
+	}
 	ft_strcpy(conv, "csdfpbouxX %\0");
 	i = -1;
 	while (conv[++i])
@@ -74,19 +80,13 @@ void	check_conv(char **fmt, t_order *order)
 		if (**fmt == conv[i])
 		{
 			(*order).conv = **fmt;
-			if (i < 4)
-				(*order).func_idx = i;
-			else
-				(*order).func_idx = 4;
+			(*order).func_idx = i;
 		}
 	}
-	if (**fmt == 'i')
-	{
-		(*order).conv = 'd';
-		(*order).func_idx = 2;
-	}
-	else if (**fmt == '%')
+	if (**fmt == '%')
 		(*order).func_idx = 0;
+	if ((*order).func_idx > 4)
+		(*order).func_idx = 4;
 }
 
 void	conversion_appropriation(t_order *order)

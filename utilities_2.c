@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/15 22:58:35 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/17 20:17:31 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ void	mfw_prec_assigner(t_order *order, char **fmt, va_list ap)
 		(*order).mfw = ft_atoi(*fmt);
 }
 
-void	write_color(char **fmt, char *default_color)
+void	write_color(char **fmt, char (*default_color)[5])
 {
 	char	*color;
 
-	(*fmt)++;
-	if (**fmt == 'r')
+	color = NULL;
+	if (*(++*fmt) == 'r')
 		color = "\x1B[31m";
 	else if (**fmt == 'g')
 		color = "\x1B[32m";
@@ -75,26 +75,14 @@ void	write_color(char **fmt, char *default_color)
 		color = "\x1B[37m";
 	else if (**fmt == 'd')
 		color = "\x1B[0m";
-	if (default_color)
-		ft_strcpy(default_color, color);
-	write(1, color, 5);
-}
-
-int	grouping_grouper(char **fmt, va_list ap,
-			char *default_color, t_order *order)
-{
-	int	char_printed;
-
-	char_printed = 0;
-	if (**fmt == '%')
-	{
-		char_printed = take_subway_order(fmt, ap, order);
-		if ((*order).color)
-			write(1, default_color, 5);
-	}
-	else if (**fmt == '@')
-		write_color((char **)fmt, default_color);
 	else
-		char_printed += ft_putchar(**fmt);
-	return (char_printed);
+	{
+		write(1, "$", 1);
+		if (**fmt == '$')
+			(*fmt)++;
+		write(1, *fmt, 1);
+	}
+	if (*default_color && color)
+		ft_strcpy(*default_color, color);
+	write(1, color, 5);
 }
