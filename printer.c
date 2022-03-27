@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/14 20:29:10 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/27 02:00:44 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	put_c(t_order *order, va_list ap)
 		c = '%';
 	length = 1;
 	bundling_bundler(&length, NULL, order);
-	write(1, &c, 1);
+	write((*order).fd, &c, 1);
 	return (length);
 }
 
@@ -45,11 +45,11 @@ int	put_s(t_order *order, va_list ap)
 	if ((*order).mfw == 0 && (*order).prec == -1)
 		return (0);
 	else if ((*order).mfw != 0 && (*order).prec == -1)
-		put_flag((*order).mfw - str_len, ' ');
+		put_flag((*order).mfw - str_len, ' ', (*order).fd);
 	else if ((*order).prec > 0)
-		write(1, s, ft_smallernum((*order).prec, str_len));
+		write((*order).fd, s, ft_smallernum((*order).prec, str_len));
 	else
-		write(1, s, str_len);
+		write((*order).fd, s, str_len);
 	return (length);
 }
 
@@ -65,18 +65,18 @@ int	put_d(t_order *order, va_list ap)
 	bundling_bundler(&length, &hash_pos_spc, order);
 	if (n == (long long int)-9223372036854775808u)
 	{
-		write(1, "9223372036854775808", 19);
+		write((*order).fd, "9223372036854775808", 19);
 		return (length - 1);
 	}
 	if ((*order).prec == -1 && n == 0)
 	{
 		if ((*order).mfw)
-			write(1, " ", 1);
+			write((*order).fd, " ", 1);
 		else
 			return (length - 1);
 	}
 	else
-		ft_putnbr(n);
+		ft_putnbr_fd(n, (*order).fd);
 	return (length);
 }
 
@@ -95,7 +95,7 @@ int	put_f(t_order *order, va_list ap)
 	length += check_value(0, (long long int *)&f, order)
 		+ ft_diglen(f) + (*order).prec + ((*order).prec != 0);
 	bundling_bundler(&length, &hash_pos_spc, order);
-	ft_putfloat(f, (*order).prec);
+	ft_putfloat_fd(f, (*order).prec, (*order).fd);
 	return (length);
 }
 
@@ -118,11 +118,11 @@ int	put_pbouxx(t_order *order, va_list ap)
 			|| ((*order).conv == 'o' && (*order).hash == 0)))
 	{
 		if ((*order).mfw)
-			write(1, " ", 1);
+			write((*order).fd, " ", 1);
 		else
 			return (length - 1);
 	}
 	else if (!((*order).conv == 'p' && (*order).prec == -1))
-		ft_d2base(u, (*order).base, (*order).conv);
+		ft_d2base_fd(u, (*order).base, (*order).conv, (*order).fd);
 	return (length - ((*order).conv == 'p' && (*order).prec == -1));
 }

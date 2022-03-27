@@ -6,12 +6,12 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/24 10:35:47 by qnguyen           #+#    #+#              #
-#    Updated: 2022/03/17 13:14:40 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/03/27 09:27:56 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
-SRCS = libftprintf prefix utilities utilities_2 printer put_flags
+SRCS = libftprintf prefix utilities utilities_2 printer flags_handler
 FLAGS = -Wall -Wextra -Werror
 NITPICK = -Wpedantic -Wunused -Wconversion -Wunreachable-code -Wtype-limits
 LIB_DIR = libft/
@@ -28,7 +28,7 @@ $(NAME):$(addsuffix .c, $(SRCS))
 
 m:
 	@gcc -g $(addsuffix .c, $(SRCS)) main.c -L$(LIB_DIR) $(LIB) -I$(LIB_DIR)
-
+	@./a.out
 clean:
 	@/bin/rm -f $(addsuffix .o, $(SRCS))
 	@make -C $(LIB_DIR) clean

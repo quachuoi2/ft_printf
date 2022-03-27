@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/17 19:32:23 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/27 09:10:27 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	check_prefix(char **fmt, t_order *order, va_list ap)
 		else if (**fmt == '$')
 		{
 			(*order).color = 1;
-			write_color(fmt, 0);
+			extra_functionality(fmt, 0, &(*order).fd, ap);
 		}
 		else if (**fmt == '*')
 			a_wild_mfw_appeared(order, ap, 'm');

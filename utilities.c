@@ -6,13 +6,13 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/17 20:01:49 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/27 01:55:10 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-void	initialize_t_order(t_order *order)
+void	initialize_t_order(t_order *order, int fd)
 {
 	(*order).space = 0;
 	(*order).pos = 0;
@@ -30,6 +30,7 @@ void	initialize_t_order(t_order *order)
 	(*order).negative_num = 0;
 	(*order).func_idx = -1;
 	(*order).color = 0;
+	(*order).fd = fd;
 }
 
 void	int_converter(unsigned long long int *u, long long *n, t_order *order)
@@ -65,12 +66,12 @@ void	bundling_bundler(int *length, int (*f)(t_order *), t_order *order)
 	*length += mfw(*length, order, f);
 	if ((*order).negative_num)
 	{
-		write(1, "-", 1);
+		write((*order).fd, "-", 1);
 		*length += 1;
 	}
 	if ((*order).conv != 's' && (*order).conv != 'c')
 		*length += cal_zero(*length, order);
-	put_flag((*order).num_of_zeros, '0');
+	put_flag((*order).num_of_zeros, '0', (*order).fd);
 }
 
 int	check_value(unsigned long long u, long long int *n, t_order *order)

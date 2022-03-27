@@ -47,6 +47,8 @@ int			ft_countwords(const char *s, char c);
 
 void		ft_d2base(unsigned long long n, int base, char x);
 
+void		ft_d2base_fd(unsigned long long n, int base, char x, int fd);
+
 int			ft_diglen(long long n);
 
 int			ft_udiglen(unsigned long long n, int base);
@@ -115,7 +117,9 @@ void		ft_putendl(char const *s);
 
 void		ft_putfloat(long double lift, int i);
 
-void		ft_putnbr_fd(int n, int fd);
+void		ft_putfloat_fd(long double lift, int i, int fd);
+
+void		ft_putnbr_fd(long long n, int fd);
 
 void		ft_putnbr(long long n);
 

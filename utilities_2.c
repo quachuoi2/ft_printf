@@ -6,16 +6,16 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/17 20:17:31 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/03/27 09:43:13 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-void	put_flag(int ammount, char c)
+void	put_flag(int ammount, char c, int fd)
 {
 	while (ammount-- > 0)
-		write(1, &c, 1);
+		write(fd, &c, 1);
 }
 
 void	a_wild_mfw_appeared(t_order *order, va_list ap, char mfw_prec)
@@ -58,7 +58,8 @@ void	mfw_prec_assigner(t_order *order, char **fmt, va_list ap)
 		(*order).mfw = ft_atoi(*fmt);
 }
 
-void	write_color(char **fmt, char (*default_color)[5])
+void	extra_functionality(char **fmt, char (*default_color)[5], int *fd,
+			va_list ap)
 {
 	char	*color;
 
@@ -69,20 +70,20 @@ void	write_color(char **fmt, char (*default_color)[5])
 		color = "\x1B[32m";
 	else if (**fmt == 'b')
 		color = "\x1B[34m";
-	else if (**fmt == 'y')
-		color = "\x1B[33m";
 	else if (**fmt == 'w')
 		color = "\x1B[37m";
 	else if (**fmt == 'd')
 		color = "\x1B[0m";
+	else if (**fmt == '0')
+		*fd = va_arg(ap, int);
 	else
 	{
-		write(1, "$", 1);
+		write(*fd, "$", 1);
 		if (**fmt == '$')
 			(*fmt)++;
-		write(1, *fmt, 1);
+		write(*fd, *fmt, 1);
 	}
 	if (*default_color && color)
 		ft_strcpy(*default_color, color);
-	write(1, color, 5);
+	write(*fd, color, 5);
 }
