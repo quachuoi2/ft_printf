@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/27 09:42:19 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/01 14:34:10 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	print_error(t_order *order, char *og_fmt, char *fmt)
 {
 	int	i;
 
+	i = 0;
 	while (og_fmt <= fmt && *og_fmt)
 	{
 		if (*og_fmt == '*')
@@ -45,7 +46,7 @@ int	take_subway_order(char **fmt, va_list ap, t_order *order)
 	check_flag(fmt, order);
 	check_conv(fmt, order);
 	conversion_appropriation(order);
-	if ((*order).conv != 0)
+	if ((*order).conv)
 	{
 		i = g_function_arr[(*order).func_idx](order, ap);
 		if ((*order).neg)
@@ -94,7 +95,8 @@ int	ft_printf(const char *fmt, ...)
 	{
 		char_printed += grouping_grouper((char **)&fmt, ap,
 				&default_color, &order, &fd);
-		fmt++;
+		if (*fmt)
+			fmt++;
 	}
 	va_end(ap);
 	return (char_printed);

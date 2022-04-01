@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/27 09:43:13 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/01 14:38:43 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,21 @@ void	mfw_prec_assigner(t_order *order, char **fmt, va_list ap)
 	else
 		(*order).mfw = ft_atoi(*fmt);
 }
+
+/* void	printf_d(int *fd, va_list ap, char fmt)
+{
+	char	*s;
+
+	if (fmt == '0')
+		*fd = va_arg(ap, int);
+	else
+	{
+		s = va_arg(ap, char *);
+		*fd = open(s, O_WRONLY);
+	}
+	if (*fd == -1)
+		write(2, "error: cannot open file\n", 24);
+} */
 
 void	extra_functionality(char **fmt, char (*default_color)[5], int *fd,
 			va_list ap)
