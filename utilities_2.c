@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/01 14:38:43 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/05 19:30:51 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,12 @@ void	mfw_prec_assigner(t_order *order, char **fmt, va_list ap)
 		s = va_arg(ap, char *);
 		*fd = open(s, O_WRONLY);
 	}
-	if (*fd == -1)
+		if (*fd == -1)
 		write(2, "error: cannot open file\n", 24);
 } */
 
 void	extra_functionality(char **fmt, char (*default_color)[5], int *fd,
-			va_list ap)
+			va_list ap) //change (*default_color)[5] to default_color[5] (pointer not needed)
 {
 	char	*color;
 
@@ -85,8 +85,6 @@ void	extra_functionality(char **fmt, char (*default_color)[5], int *fd,
 		color = "\x1B[32m";
 	else if (**fmt == 'b')
 		color = "\x1B[34m";
-	else if (**fmt == 'w')
-		color = "\x1B[37m";
 	else if (**fmt == 'd')
 		color = "\x1B[0m";
 	else if (**fmt == '0')
@@ -98,7 +96,8 @@ void	extra_functionality(char **fmt, char (*default_color)[5], int *fd,
 			(*fmt)++;
 		write(*fd, *fmt, 1);
 	}
+	if (color)
+		write(*fd, color, 5);
 	if (*default_color && color)
 		ft_strcpy(*default_color, color);
-	write(*fd, color, 5);
 }

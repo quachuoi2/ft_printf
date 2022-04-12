@@ -6,7 +6,7 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/29 19:02:23 by qnguyen           #+#    #+#              #
-#    Updated: 2022/03/27 02:00:19 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/04/11 19:43:13 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ ft_putnbr_fd ft_putnbr ft_putstr ft_putstr_fd ft_smallernum ft_sqrt\
 ft_strcat ft_strchr ft_strclr ft_strcmp ft_strcpy ft_strdel ft_strdup \
 ft_strequ ft_striter ft_striteri ft_strjoin ft_strlcat ft_strlen ft_strmap \
 ft_strmapi ft_strncat ft_strncmp ft_strncpy ft_strnequ ft_strnew ft_strnstr \
-ft_strrchr ft_strsplit ft_strstr ft_strsub ft_strtrim ft_tolower ft_toupper
+ft_strrchr ft_strsplit ft_strstr ft_strsub ft_strtrim ft_swap ft_tolower ft_toupper
 FLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)

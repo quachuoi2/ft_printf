@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/01 14:41:06 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/12 01:36:36 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ typedef struct s_order
 	int		base;
 	int		negative_num;
 	int		color;
-	int		conv;
 	int		mfw;
 	int		prec;
 	int		num_of_padding;
 	int		num_of_zeros;
 	int		func_idx;
 	int		fd;
+	char	conv;
 	char	flag[2];
 }				t_order;
 

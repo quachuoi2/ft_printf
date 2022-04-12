@@ -51,8 +51,6 @@ void		ft_d2base_fd(unsigned long long n, int base, char x, int fd);
 
 int			ft_diglen(long long n);
 
-int			ft_udiglen(unsigned long long n, int base);
-
 int			ft_greaternum(int a, int b);
 
 int			ft_isalnum(int c);
@@ -183,8 +181,12 @@ char		*ft_strsub(char const *s, unsigned int start, size_t len);
 
 char		*ft_strtrim(char const *s);
 
+void		ft_swap(int *a, int *b);
+
 int			ft_toupper(int c);
 
 int			ft_tolower(int c);
+
+int			ft_udiglen(unsigned long long n, int base);
 
 #endif

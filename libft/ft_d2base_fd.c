@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 01:59:20 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/27 01:59:52 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/12 01:43:32 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_d2base_fd(unsigned long long n, int base, char x, int fd)
 	if (n > (unsigned long long)(base - 1))
 		ft_d2base_fd(n / base, base, x, fd);
 	if (base < 11)
-		ft_putnbr(n % base);
+		ft_putnbr_fd(n % base, fd);
 	else
 		ft_putchar_fd(hex_digit(n % base, x), fd);
 }
