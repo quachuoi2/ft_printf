@@ -6,31 +6,31 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/03/27 09:10:27 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/13 14:18:52 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-void	helping_helper(t_order *order, char fmt)
+void	helping_helper(char fmt)
 {
-	(*order).space += (fmt == ' ');
-	(*order).hash += (fmt == '#');
-	(*order).zero += (fmt == '0');
-	(*order).neg += (fmt == '-');
-	(*order).pos += (fmt == '+');
+	g_order.space += (fmt == ' ');
+	g_order.hash += (fmt == '#');
+	g_order.zero += (fmt == '0');
+	g_order.neg += (fmt == '-');
+	g_order.pos += (fmt == '+');
 }
 
-void	check_prefix(char **fmt, t_order *order, va_list ap)
+void	check_prefix(char **fmt, va_list ap)
 {
 	while (**fmt == ' ' || **fmt == '#' || **fmt == '-' || **fmt == '+'
 		|| **fmt == '.' || **fmt == '$' || **fmt == '*' || ft_isdigit(**fmt))
 	{
-		if ((*order).mfw == 0 && (*order).prec == 0)
-			helping_helper(order, **fmt);
+		if (g_order.mfw == 0 && g_order.prec == 0)
+			helping_helper(**fmt);
 		if ((**fmt >= '1' && **fmt <= '9') || **fmt == '.')
 		{
-			mfw_prec_assigner(order, fmt, ap);
+			mfw_prec_assigner(fmt, ap);
 			while (ft_isdigit(**fmt) || **fmt == '-' || **fmt == '+')
 				(*fmt)++;
 			if (**fmt != '.')
@@ -39,38 +39,38 @@ void	check_prefix(char **fmt, t_order *order, va_list ap)
 		}
 		else if (**fmt == '$')
 		{
-			(*order).color = 1;
-			extra_functionality(fmt, 0, &(*order).fd, ap);
+			g_order.color = 1;
+			extra_functionality(fmt, 0, &g_order.fd, ap);
 		}
 		else if (**fmt == '*')
-			a_wild_mfw_appeared(order, ap, 'm');
+			a_wild_mfw_appeared(ap, 'm');
 		(*fmt)++;
 	}
 }
 
-void	check_flag(char **fmt, t_order *order)
+void	check_flag(char **fmt)
 {
 	if (**fmt == 'h' || **fmt == 'l' || **fmt == 'L')
 	{
 		if ((*fmt)[1] == **fmt)
 		{
-			(*order).flag[1] = **fmt;
+			g_order.flag[1] = **fmt;
 			(*fmt)++;
 		}
-		(*order).flag[0] = **fmt;
+		g_order.flag[0] = **fmt;
 		(*fmt)++;
 	}
 }
 
-void	check_conv(char **fmt, t_order *order)
+void	check_conv(char **fmt)
 {
 	char	conv[13];
 	int		i;
 
 	if (**fmt == 'i')
 	{
-		(*order).conv = 'd';
-		(*order).func_idx = 2;
+		g_order.conv = 'd';
+		g_order.func_idx = 2;
 		return ;
 	}
 	ft_strcpy(conv, "csdfpbouxX %\0");
@@ -79,37 +79,12 @@ void	check_conv(char **fmt, t_order *order)
 	{
 		if (**fmt == conv[i])
 		{
-			(*order).conv = **fmt;
-			(*order).func_idx = i;
+			g_order.conv = **fmt;
+			g_order.func_idx = i;
 		}
 	}
 	if (**fmt == '%')
-		(*order).func_idx = 0;
-	if ((*order).func_idx > 4)
-		(*order).func_idx = 4;
-}
-
-void	conversion_appropriation(t_order *order)
-{
-	if ((*order).conv == 'o')
-		(*order).base = 8;
-	else if ((*order).conv == 'x' || (*order).conv == 'X'
-		|| (*order).conv == 'p')
-		(*order).base = 16;
-	else if ((*order).conv == 'b')
-		(*order).base = 2;
-	if ((*order).conv == 'f' && (*order).prec == 0)
-		(*order).prec = 6;
-	else if ((*order).conv == 'f' && (*order).prec == -1)
-		(*order).prec = 0;
-	if ((*order).conv == 'p')
-		(*order).hash = 1;
-	if (((*order).conv != 'p' && (*order).conv != 'c' && (*order).conv != 's'
-			&& (*order).prec != 0) || ((*order).prec == 0 && (*order).neg == 1))
-		(*order).zero = 0;
-	if ((*order).prec < -1)
-	{
-		(*order).mfw = -(*order).prec;
-		(*order).neg = 1;
-	}
+		g_order.func_idx = 0;
+	if (g_order.func_idx > 4)
+		g_order.func_idx = 4;
 }

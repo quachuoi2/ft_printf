@@ -6,12 +6,13 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/24 10:35:47 by qnguyen           #+#    #+#              #
-#    Updated: 2022/03/27 09:27:56 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/04/13 14:12:18 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
-SRCS = libftprintf prefix utilities utilities_2 printer flags_handler
+SRCS = libftprintf prefix utilities utilities_2 printer flags_handler\
+conversion_prefix_adapter
 FLAGS = -Wall -Wextra -Werror
 NITPICK = -Wpedantic -Wunused -Wconversion -Wunreachable-code -Wtype-limits
 LIB_DIR = libft/
@@ -21,13 +22,13 @@ all: $(NAME)
 
 $(NAME):$(addsuffix .c, $(SRCS))
 	make -C $(LIB_DIR)
-	gcc -c $(addsuffix .c, $(SRCS)) $(FLAGS) -I$(LIB_DIR)
+	gcc -c -O3 $(addsuffix .c, $(SRCS)) $(FLAGS) -I$(LIB_DIR)
 	cp $(LIB_DIR)libft.a .
 	mv libft.a $(NAME)
 	ar -rcs $(NAME) $(addsuffix .o, $(SRCS))
 
 m:
-	@gcc -g $(addsuffix .c, $(SRCS)) main.c -L$(LIB_DIR) $(LIB) -I$(LIB_DIR)
+	@gcc -g -O3 $(addsuffix .c, $(SRCS)) main.c -L$(LIB_DIR) $(LIB) -I$(LIB_DIR)
 	@./a.out
 clean:
 	@/bin/rm -f $(addsuffix .o, $(SRCS))

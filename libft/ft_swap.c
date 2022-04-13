@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 19:21:19 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/11 19:22:19 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/13 14:15:43 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_swap(int *a, int *b)
 {
-	int temp;
+	int	temp;
 
 	temp = *a;
 	*a = *b;

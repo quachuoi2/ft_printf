@@ -6,28 +6,33 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/12 01:11:14 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/13 14:19:01 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-int	put_c(t_order *order, va_list ap)
+int	put_c(va_list ap)
 {
 	char		c;
 	int			length;
 
-	if ((*order).conv != '%')
-		c = va_arg(ap, int);
-	else
-		c = '%';
 	length = 1;
-	bundling_bundler(&length, NULL, order);
-	write((*order).fd, &c, 1);
+	if (g_order.conv != '%')
+	{
+		c = va_arg(ap, int);
+		bundling_bundler(&length, NULL);
+	}
+	else
+	{
+		c = '%';
+		bundling_bundler(&length, &hash_pos_spc);
+	}
+	write(g_order.fd, &c, 1);
 	return (length);
 }
 
-int	put_s(t_order *order, va_list ap)
+int	put_s(va_list ap)
 {
 	char		*s;
 	int			length;
@@ -37,92 +42,94 @@ int	put_s(t_order *order, va_list ap)
 	if (s == NULL)
 		s = "(null)";
 	str_len = ft_strlen(s);
-	if ((*order).prec > 0 && (*order).prec < str_len)
-		length = (*order).prec;
+	if (g_order.prec > 0 && g_order.prec < str_len)
+		length = g_order.prec;
+	else if (g_order.prec == -1)
+		length = 0;
 	else
 		length = str_len;
-	bundling_bundler(&length, NULL, order);
-	if ((*order).mfw == 0 && (*order).prec == -1)
+	bundling_bundler(&length, NULL);
+	if (g_order.mfw == 0 && g_order.prec == -1)
 		return (0);
-	else if ((*order).mfw != 0 && (*order).prec == -1)
-		put_flag((*order).mfw - str_len, ' ', (*order).fd);
-	else if ((*order).prec > 0)
-		write((*order).fd, s, ft_smallernum((*order).prec, str_len));
+	else if (g_order.mfw != 0 && g_order.prec == -1)
+		put_flag(g_order.mfw - g_order.num_of_padding, ' ', g_order.fd);
+	else if (g_order.prec > 0)
+		write(g_order.fd, s, ft_smallernum(g_order.prec, str_len));
 	else
-		write((*order).fd, s, str_len);
+		write(g_order.fd, s, str_len);
 	return (length);
 }
 
-int	put_d(t_order *order, va_list ap)
+int	put_d(va_list ap)
 {
 	long long int	n;
 	int				length;
 
 	length = 0;
 	n = va_arg(ap, long long int);
-	int_converter(NULL, &n, order);
-	length += check_value(0, &n, order) + ft_diglen(n);
-	bundling_bundler(&length, &hash_pos_spc, order);
+	int_converter(NULL, &n);
+	length += check_value(0, &n) + ft_diglen(n);
+	bundling_bundler(&length, &hash_pos_spc);
 	if (n == (long long int)-9223372036854775808u)
 	{
-		write((*order).fd, "9223372036854775808", 19);
+		write(g_order.fd, "9223372036854775808", 19);
 		return (length - 1);
 	}
-	if ((*order).prec == -1 && n == 0)
+	if (g_order.prec == -1 && n == 0)
 	{
-		if ((*order).mfw)
-			write((*order).fd, " ", 1);
+		if (g_order.mfw)
+			write(g_order.fd, " ", 1);
 		else
 			return (length - 1);
 	}
 	else
-		ft_putnbr_fd(n, (*order).fd);
+		ft_putnbr_fd(n, g_order.fd);
 	return (length);
 }
 
-int	put_f(t_order *order, va_list ap)
+int	put_f(va_list ap)
 {
 	long double	f;
 	int			length;
 
 	length = 0;
-	if ((*order).flag[0] == 'L')
+	if (g_order.flag[0] == 'L')
 		f = va_arg(ap, long double);
 	else
 		f = va_arg(ap, double);
 	if (1 / f < 0 && f == 0)
-		(*order).negative_num = 1;
-	length += check_value(0, (long long int *)&f, order)
-		+ ft_diglen(f) + (*order).prec + ((*order).prec != 0);
-	bundling_bundler(&length, &hash_pos_spc, order);
-	ft_putfloat_fd(f, (*order).prec, (*order).fd);
+		g_order.negative_num = 1;
+	length += check_value(0, (long long int *)&f)
+		+ ft_diglen(f) + g_order.prec + (g_order.prec != 0);
+	bundling_bundler(&length, &hash_pos_spc);
+	ft_putfloat_fd(f, g_order.prec, g_order.fd);
 	return (length);
 }
 
-int	put_pbouxx(t_order *order, va_list ap)
+int	put_pbouxx(va_list ap)
 {
 	int						length;
 	unsigned long long int	u;
 
 	length = 0;
-	if ((*order).conv == 'p')
+	if (g_order.conv == 'p')
 		u = (intptr_t)va_arg(ap, void *);
 	else
 		u = va_arg(ap, unsigned long long int);
-	if ((*order).conv != 'p')
-		int_converter(&u, 0, order);
-	length += check_value(u, 0, order) + ft_udiglen(u, (*order).base);
-	bundling_bundler(&length, &hash_pos_spc, order);
-	if (u == 0 && (*order).prec == -1
-		&& (((*order).conv != 'p' && (*order).conv != 'o')
-			|| ((*order).conv == 'o' && (*order).hash == 0)))
+	if (g_order.conv != 'p')
+		int_converter(&u, 0);
+	length += check_value(u, 0) + ft_udiglen(u, g_order.base);
+	bundling_bundler(&length, &hash_pos_spc);
+	if (u == 0 && g_order.prec == -1
+		&& ((g_order.conv != 'p' && g_order.conv != 'o')
+			|| (g_order.conv == 'o' && g_order.hash == 0)))
 	{
-		if ((*order).mfw)
-			write((*order).fd, " ", 1);
+		if (g_order.mfw)
+			write(g_order.fd, " ", 1);
 		else
 			return (length - 1);
 	}
-	else if (!((*order).conv == 'p' && (*order).prec == -1))
-		ft_d2base_fd(u, (*order).base, (*order).conv, (*order).fd);
-	return (length - ((*order).conv == 'p' && (*order).prec == -1));
+	else if (!(g_order.conv == 'p' && g_order.prec == -1))
+		ft_d2base_fd(u, g_order.base, g_order.conv, g_order.fd);
+	return (length - (g_order.conv == 'p' && g_order.prec == -1));
 }

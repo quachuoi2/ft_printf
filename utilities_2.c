@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/05 19:30:51 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/13 14:19:19 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,44 +18,44 @@ void	put_flag(int ammount, char c, int fd)
 		write(fd, &c, 1);
 }
 
-void	a_wild_mfw_appeared(t_order *order, va_list ap, char mfw_prec)
+void	a_wild_mfw_appeared(va_list ap, char mfw_prec)
 {
 	int	n;
 
 	n = va_arg(ap, int);
 	if (n < 0)
 	{
-		if ((*order).mfw)
+		if (g_order.mfw)
 			return ;
 		n = -n;
-		(*order).neg = 1;
+		g_order.neg = 1;
 	}
 	if (mfw_prec == 'm')
-		(*order).mfw = n;
+		g_order.mfw = n;
 	else if (mfw_prec == 'p' && n == 0)
-		(*order).prec = -1;
-	else if (mfw_prec == 'p' && (*order).neg == 0)
-		(*order).prec = n;
+		g_order.prec = -1;
+	else if (mfw_prec == 'p' && g_order.neg == 0)
+		g_order.prec = n;
 }
 
-void	mfw_prec_assigner(t_order *order, char **fmt, va_list ap)
+void	mfw_prec_assigner(char **fmt, va_list ap)
 {
 	if (**fmt == '.')
 	{
 		(*fmt)++;
 		if (**fmt == '*')
 		{
-			a_wild_mfw_appeared(order, ap, 'p');
+			a_wild_mfw_appeared(ap, 'p');
 			(*fmt)++;
 			return ;
 		}
 		if (ft_atoi(*fmt) == 0)
-			(*order).prec = -1;
+			g_order.prec = -1;
 		else
-			(*order).prec = ft_atoi(*fmt);
+			g_order.prec = ft_atoi(*fmt);
 	}
 	else
-		(*order).mfw = ft_atoi(*fmt);
+		g_order.mfw = ft_atoi(*fmt);
 }
 
 /* void	printf_d(int *fd, va_list ap, char fmt)
@@ -74,8 +74,9 @@ void	mfw_prec_assigner(t_order *order, char **fmt, va_list ap)
 } */
 
 void	extra_functionality(char **fmt, char (*default_color)[5], int *fd,
-			va_list ap) //change (*default_color)[5] to default_color[5] (pointer not needed)
+			va_list ap)
 {
+	//change (*default_color)[5] to default_color[5] (pointer not needed)
 	char	*color;
 
 	color = NULL;
