@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:56:51 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/13 14:22:06 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/19 10:21:17 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,15 +81,12 @@ int	check_value(unsigned long long u, long long int *n)
 		if (g_order.hash == 1 && g_order.conv != 'p')
 			g_order.hash = -1;
 	}
-	if (n != NULL && *n < 0)
+	if (n != NULL && *n < 0 && g_order.conv != 'f')
 	{
 		g_order.pos = 0;
 		g_order.space = 0;
-		if (*n < 0 && g_order.conv != 'f')
-		{
-			g_order.negative_num = 1;
-			*n = -*n;
-		}
+		g_order.negative_num = 1;
+		*n = -*n;
 	}
 	return (0);
 }

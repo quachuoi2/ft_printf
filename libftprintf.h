@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/13 14:21:27 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/19 12:25:38 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ extern t_order	g_order;
 int		print_error(char *og_fmt, char *fmt);
 int		take_subway_order(char **fmt, va_list ap);
 int		grouping_grouper(char **fmt, va_list ap,
-			char (*default_color)[5], int *fd);
+			char default_color[5], int *fd);
 int		ft_printf(const char *format, ...);
 
 //prefix.c
@@ -64,7 +64,7 @@ int		check_value(unsigned long long u, long long int *n);
 void	put_flag(int ammount, char c, int fd);
 void	a_wild_mfw_appeared(va_list ap, char m_p);
 void	mfw_prec_assigner(char **fmt, va_list ap);
-void	extra_functionality(char **fmt, char (*default_color)[5], int *fd,
+void	extra_functionality(char **fmt, char default_color[5], int *fd,
 			va_list ap);
 
 //printer.c
@@ -82,7 +82,7 @@ int		mfw(int length, int (*f)(void));
 
 //conversion_prefix_adapter.c
 void	conversion_adapter(void);
-void	set_base(void);
+void	set_pbouxx_values(void);
 void	set_percent_sign(void);
 
 #endif

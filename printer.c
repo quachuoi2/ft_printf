@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/13 14:19:01 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/19 10:21:54 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ int	put_c(va_list ap)
 	int			length;
 
 	length = 1;
-	if (g_order.conv != '%')
+	if (g_order.conv == 'c')
 	{
 		c = va_arg(ap, int);
 		bundling_bundler(&length, NULL);
 	}
 	else
 	{
+		set_percent_sign();
 		c = '%';
 		bundling_bundler(&length, &hash_pos_spc);
 	}
@@ -92,6 +93,10 @@ int	put_f(va_list ap)
 	long double	f;
 	int			length;
 
+	if (g_order.prec == 0)
+		g_order.prec = 6;
+	else if (g_order.prec == -1)
+		g_order.prec = 0;
 	length = 0;
 	if (g_order.flag[0] == 'L')
 		f = va_arg(ap, long double);
@@ -102,7 +107,9 @@ int	put_f(va_list ap)
 	length += check_value(0, (long long int *)&f)
 		+ ft_diglen(f) + g_order.prec + (g_order.prec != 0);
 	bundling_bundler(&length, &hash_pos_spc);
-	ft_putfloat_fd(f, g_order.prec, g_order.fd);
+	length += ft_putfloat_fd(f, g_order.prec, g_order.fd);
+	if (!g_order.prec && g_order.hash)
+		length += write(g_order.fd, ".", 1);
 	return (length);
 }
 
@@ -111,6 +118,7 @@ int	put_pbouxx(va_list ap)
 	int						length;
 	unsigned long long int	u;
 
+	set_pbouxx_values();
 	length = 0;
 	if (g_order.conv == 'p')
 		u = (intptr_t)va_arg(ap, void *);

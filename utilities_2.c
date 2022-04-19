@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/13 14:19:19 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/19 11:27:54 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,15 @@ void	a_wild_mfw_appeared(va_list ap, char mfw_prec)
 	n = va_arg(ap, int);
 	if (n < 0)
 	{
-		if (g_order.mfw)
+		if (g_order.mfw || mfw_prec == 'p')
 			return ;
 		n = -n;
 		g_order.neg = 1;
 	}
 	if (mfw_prec == 'm')
 		g_order.mfw = n;
-	else if (mfw_prec == 'p' && n == 0)
-		g_order.prec = -1;
-	else if (mfw_prec == 'p' && g_order.neg == 0)
-		g_order.prec = n;
+	else if (mfw_prec == 'p')
+		g_order.prec = -(!n) | n;
 }
 
 void	mfw_prec_assigner(char **fmt, va_list ap)
@@ -73,10 +71,9 @@ void	mfw_prec_assigner(char **fmt, va_list ap)
 		write(2, "error: cannot open file\n", 24);
 } */
 
-void	extra_functionality(char **fmt, char (*default_color)[5], int *fd,
+void	extra_functionality(char **fmt, char default_color[5], int *fd,
 			va_list ap)
 {
-	//change (*default_color)[5] to default_color[5] (pointer not needed)
 	char	*color;
 
 	color = NULL;
@@ -99,6 +96,6 @@ void	extra_functionality(char **fmt, char (*default_color)[5], int *fd,
 	}
 	if (color)
 		write(*fd, color, 5);
-	if (*default_color && color)
-		ft_strcpy(*default_color, color);
+	if (default_color && color)
+		ft_strcpy(default_color, color);
 }

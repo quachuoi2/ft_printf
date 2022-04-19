@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 18:42:06 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/13 14:19:06 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/19 10:51:26 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,16 @@ int	hash_pos_spc(void)
 			write(g_order.fd, "0", 1);
 		return (2 - (g_order.conv == 'o'));
 	}
-	if (g_order.pos && g_order.conv == 'd')
-		write(g_order.fd, "+", 1);
-	else if (g_order.space && g_order.conv == 'd')
-		write(g_order.fd, " ", 1);
-	return ((g_order.pos || g_order.space) * (g_order.conv == 'd'));
+	if (g_order.conv == 'd' || g_order.conv == 'f')
+	{
+		if (g_order.pos)
+			write(g_order.fd, "+", 1);
+		else if (g_order.space)
+			write(g_order.fd, " ", 1);
+		return ((g_order.pos || g_order.space)
+			* (g_order.conv == 'd' || g_order.conv == 'f'));
+	}
+	return (0);
 }
 
 int	cal_zero(int length)
@@ -39,11 +44,10 @@ int	cal_zero(int length)
 
 	if (g_order.num_of_zeros != 0)
 		return (0);
-	zero = 0;
-	if (g_order.prec == 0)
+	zero = g_order.mfw - (g_order.pos || g_order.space)
+		- length - g_order.negative_num;
+	if (!g_order.prec)
 	{
-		zero = g_order.mfw - (g_order.pos || g_order.space)
-			- length - g_order.negative_num;
 		if (g_order.hash == 1 && g_order.conv == 'o')
 			zero -= 1;
 		else if (g_order.hash == 1)
@@ -51,9 +55,9 @@ int	cal_zero(int length)
 	}
 	else
 	{
-		if (g_order.mfw > g_order.prec)
-			zero = g_order.mfw - length;
-		else
+		if (g_order.mfw > g_order.prec && g_order.conv != 'f')
+				zero = g_order.mfw - length;
+		else if (g_order.mfw <= g_order.prec)
 			zero = g_order.prec - length;
 	}
 	g_order.num_of_zeros = (zero > 0) * zero;

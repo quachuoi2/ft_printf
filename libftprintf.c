@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/13 14:21:54 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/19 11:29:02 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	take_subway_order(char **fmt, va_list ap)
 	check_flag(fmt);
 	check_conv(fmt);
 	conversion_adapter();
-	//printf("\nspc - %d\nhash - %d\nzero - %d\nneg - %d\npos- %d\nmwf - %d\nprec - %d\nflag - %c%c\nconv - %c\n", g_order.space, g_order.hash, g_order.zero, g_order.neg, g_order.pos, g_order.mfw, g_order.prec, g_order.flag[0], g_order.flag[1], g_order.conv);
 	if (g_order.conv)
 	{
 		i = g_function_arr[g_order.func_idx](ap);
@@ -59,7 +58,7 @@ int	take_subway_order(char **fmt, va_list ap)
 }
 
 int	grouping_grouper(char **fmt, va_list ap,
-			char (*default_color)[5], int *fd)
+			char default_color[5], int *fd)
 {
 	int	char_printed;
 
@@ -69,7 +68,7 @@ int	grouping_grouper(char **fmt, va_list ap,
 		initialize_order(*fd);
 		char_printed = take_subway_order(fmt, ap);
 		if (g_order.color)
-			write(*fd, *default_color, 5);
+			write(*fd, default_color, 5);
 	}
 	else if (**fmt == '$')
 		extra_functionality((char **)fmt, default_color, fd, ap);
@@ -95,7 +94,7 @@ int	ft_printf(const char *fmt, ...)
 	while (*fmt)
 	{
 		char_printed += grouping_grouper((char **)&fmt, ap,
-				&default_color, &fd);
+				default_color, &fd);
 		if (*fmt)
 			fmt++;
 	}
