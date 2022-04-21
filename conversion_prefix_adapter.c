@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 13:43:13 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/19 11:31:25 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/21 07:38:45 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,14 @@ void	set_percent_sign(void)
 	g_order.prec = 0;
 	g_order.pos = 0;
 	g_order.space = 0;
+}
+
+void	set_f_values(void)
+{
+	if (g_order.prec == 0)
+		g_order.prec = 6;
+	else if (g_order.prec == -1)
+		g_order.prec = 0;
+	if (g_order.prec)
+		g_order.hash = 0;
 }

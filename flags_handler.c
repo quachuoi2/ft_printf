@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 18:42:06 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/19 10:51:26 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/21 07:18:05 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	hash_pos_spc(void)
 			write(g_order.fd, "0x", 2);
 		else if (g_order.conv == 'o')
 			write(g_order.fd, "0", 1);
-		return (2 - (g_order.conv == 'o'));
+		return (2 - (g_order.conv == 'o' || g_order.conv == 'f'));
 	}
 	if (g_order.conv == 'd' || g_order.conv == 'f')
 	{

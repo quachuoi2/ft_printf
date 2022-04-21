@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/19 10:21:54 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/21 07:38:51 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,23 +93,23 @@ int	put_f(va_list ap)
 	long double	f;
 	int			length;
 
-	if (g_order.prec == 0)
-		g_order.prec = 6;
-	else if (g_order.prec == -1)
-		g_order.prec = 0;
+	set_f_values();
 	length = 0;
 	if (g_order.flag[0] == 'L')
 		f = va_arg(ap, long double);
 	else
 		f = va_arg(ap, double);
-	if (1 / f < 0 && f == 0)
-		g_order.negative_num = 1;
-	length += check_value(0, (long long int *)&f)
-		+ ft_diglen(f) + g_order.prec + (g_order.prec != 0);
+	if (1 / f < 0)
+	{
+		g_order.pos = 0;
+		if (f > -1.0L)
+			g_order.negative_num = 1;
+	}
+	length += ft_diglen(f) + g_order.prec + (g_order.prec != 0);
 	bundling_bundler(&length, &hash_pos_spc);
 	length += ft_putfloat_fd(f, g_order.prec, g_order.fd);
-	if (!g_order.prec && g_order.hash)
-		length += write(g_order.fd, ".", 1);
+	if (!g_order.prec && g_order.hash && g_order.conv == 'f')
+		write(g_order.fd, ".", 1);
 	return (length);
 }
 

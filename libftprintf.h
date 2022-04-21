@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/19 12:25:38 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/21 07:38:59 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ int		mfw(int length, int (*f)(void));
 void	conversion_adapter(void);
 void	set_pbouxx_values(void);
 void	set_percent_sign(void);
+void	set_f_values(void);
 
 #endif

@@ -113,7 +113,7 @@ void		ft_putendl_fd(char const *s, int fd);
 
 void		ft_putendl(char const *s);
 
-void		ft_putfloat(long double lift, int prec);
+int			ft_putfloat(long double lift, int prec);
 
 int			ft_putfloat_fd(long double lift, int prec, int fd);
 
