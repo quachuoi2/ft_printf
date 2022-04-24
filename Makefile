@@ -6,11 +6,12 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/24 10:35:47 by qnguyen           #+#    #+#              #
-#    Updated: 2022/04/13 14:12:18 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/04/24 10:17:36 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
+LIBFT = libft.a
 SRCS = libftprintf prefix utilities utilities_2 printer flags_handler\
 conversion_prefix_adapter
 FLAGS = -Wall -Wextra -Werror
@@ -20,16 +21,17 @@ LIB = -lft
 
 all: $(NAME)
 
-$(NAME):$(addsuffix .c, $(SRCS))
+$(NAME): $(addsuffix .c, $(SRCS))
 	make -C $(LIB_DIR)
-	gcc -c -O3 $(addsuffix .c, $(SRCS)) $(FLAGS) -I$(LIB_DIR)
+	gcc -c $(addsuffix .c, $(SRCS)) $(FLAGS) -I$(LIB_DIR) #-O3
 	cp $(LIB_DIR)libft.a .
-	mv libft.a $(NAME)
+	cp libft.a $(NAME)
 	ar -rcs $(NAME) $(addsuffix .o, $(SRCS))
 
 m:
-	@gcc -g -O3 $(addsuffix .c, $(SRCS)) main.c -L$(LIB_DIR) $(LIB) -I$(LIB_DIR)
+	@gcc -g $(addsuffix .c, $(SRCS)) main.c -L$(LIB_DIR) $(LIB) -I$(LIB_DIR) #-O3
 	@./a.out
+
 clean:
 	@/bin/rm -f $(addsuffix .o, $(SRCS))
 	@make -C $(LIB_DIR) clean

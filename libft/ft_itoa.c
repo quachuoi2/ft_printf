@@ -6,28 +6,27 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/05 05:48:16 by qnguyen           #+#    #+#             */
-/*   Updated: 2021/12/09 20:27:01 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/23 11:06:57 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long long n)
 {
 	char	*s;
 	int		c;
 
 	c = ft_diglen(n);
-	s = (char *)malloc(sizeof(char) * (c + 1 + 1));
+	s = (char *)malloc(sizeof(char) * (c + 1));
+	if (n < -9223372036854775807)
+		return (ft_strcpy(s, "-9223372036854775808"));
 	if (s == NULL)
 		return (NULL);
-	if (n == -2147483648)
-		return (ft_strcpy(s, "-2147483648"));
 	if (n < 0)
 	{
 		s[0] = '-';
 		n = -n;
-		c++;
 	}
 	s[c--] = '\0';
 	while (n / 10 > 0)

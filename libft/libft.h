@@ -65,7 +65,7 @@ int			ft_isprint(int c);
 
 int			ft_isspace(int c);
 
-char		*ft_itoa(int n);
+char		*ft_itoa(long long n);
 
 void		ft_linkdel(void *content, size_t content_size);
 

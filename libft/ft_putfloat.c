@@ -6,52 +6,108 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 18:39:42 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/21 07:19:43 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/04/24 11:51:32 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	number_rounding(int *temp, int *i, long long *main_num,
-		long double *lift)
+static void	print_float(char *base_num, char *decimals, int prec)
 {
-	*temp = ft_diglen((long long)*lift);
-	if (*lift - (long long)*lift >= 0.5)
-		(*lift)++;
-	*i = ft_diglen((long long)*lift);
-	if (*i > *temp)
+	ft_putstr(base_num);
+	if (prec)
 	{
-		(*main_num)++;
-		*lift = 0;
-		*temp = (*main_num) % 10;
+		write(1, ".", 1);
+		ft_putstr(decimals);
 	}
+}
+
+static int	round_base_num(int i, char *base_num)
+{
+	if (i < 0)
+		return (0);
+	if (base_num[i] < '9')
+	{
+		base_num[i]++;
+		return (1);
+	}
+	else
+	{
+		base_num[i] = '0';
+		i--;
+		return (round_base_num(i, base_num));
+	}
+}
+
+static int	round_prev_dec(int i, char *decimals)
+{
+	if (i < 0)
+		return (0);
+	if (decimals[i] < '9')
+	{
+		decimals[i]++;
+		return (1);
+	}
+	else
+	{
+		decimals[i] = '0';
+		i--;
+		return (round_prev_dec(i, decimals));
+	}
+}
+
+static int	set_decimal(int prec, long double lift, char *decimals)
+{
+	int	i;
+	int	ret;
+
+	ret = 1;
+	if (lift < 0)
+		lift *= -1;
+	lift -= (long long)lift;
+	lift *= 10;
+	i = -1;
+	while (++i < prec - 1)
+	{
+		decimals[i] = (long long)lift + '0';
+		lift -= (long long)lift;
+		lift *= 10;
+	}
+	if (lift - (long long)lift >= 0.5)
+		lift++;
+	if (lift >= 10.0)
+	{
+		lift = 0;
+		ret = round_prev_dec(i - 1, decimals);
+	}
+	decimals[i++] = (long long)lift + '0';
+	decimals[i] = '\0';
+	return (ret);
 }
 
 int	ft_putfloat(long double lift, int prec)
 {
-	long long	main_num;
-	int			i;
-	int			temp;
+	char	*tmp;
+	char	base_num[25];
+	char	decimals[25];
+	int		base_len;
+	int		ret;
 
-	main_num = (long long)lift;
-	lift -= main_num;
-	if (lift < 0)
-		lift *= -1;
-	i = 0;
-	while (i++ < prec)
-		lift *= 10;
-	number_rounding(&temp, &i, &main_num, &lift);
-	ft_putnbr(main_num);
-	if (prec)
+	tmp = ft_itoa((long long)lift);
+	ft_strcpy(base_num, tmp);
+	base_len = ft_strlen(base_num);
+	free(tmp);
+	ret = 0;
+	if (!set_decimal(prec, lift, decimals))
 	{
-		write(1, ".", 1);
-		while (prec-- > i)
-			write(1, "0", 1);
-		if (!lift)
-			while (prec-- >= 0)
-				write(1, "0", 1);
-		else
-			ft_putnbr((long long)lift);
+		if (!round_base_num(base_len - 1, base_num))
+		{
+			base_num[0] = '1';
+			base_num[base_len] = '0';
+			base_num[base_len + 1] = '\0';
+			ret = 1;
+		}
 	}
-	return (!temp);
+	print_float(base_num, decimals, prec);
+	return (ret);
 }
