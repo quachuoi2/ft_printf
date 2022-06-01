@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/24 10:12:31 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/05/31 14:04:28 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	grouping_grouper(char **fmt, va_list ap,
 {
 	int	char_printed;
 
-	char_printed = 0;
 	if (**fmt == '%')
 	{
 		initialize_order(*fd);
@@ -71,18 +70,18 @@ int	grouping_grouper(char **fmt, va_list ap,
 			write(*fd, default_color, 5);
 	}
 	else if (**fmt == '$')
-		extra_functionality((char **)fmt, default_color, fd, ap);
-	else
 	{
-		write(*fd, *fmt, 1);
-		char_printed += 1;
+		extra_functionality(fmt, default_color, fd, ap);
+		char_printed = 0;
 	}
+	else
+		char_printed = write(*fd, *fmt, 1);
 	return (char_printed);
 }
 
 int	ft_printf(const char *fmt, ...)
 {
-	char	default_color[5];
+	char	default_color[6];
 	int		char_printed;
 	va_list	ap;
 	int		fd;

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 18:42:06 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/21 07:18:05 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/05/31 14:49:51 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	hash_pos_spc(void)
 	if (g_order.hash > 0)
 	{
 		if (g_order.conv == 'b')
-			write(g_order.fd, "0b", 2);
-		else if (g_order.conv == 'X')
-			write(g_order.fd, "0X", 2);
-		else if (g_order.conv == 'x' || g_order.conv == 'p')
-			write(g_order.fd, "0x", 2);
-		else if (g_order.conv == 'o')
+			return (write(g_order.fd, "0b", 2));
+		if (g_order.conv == 'X')
+			return (write(g_order.fd, "0X", 2));
+		if (g_order.conv == 'x' || g_order.conv == 'p')
+			return (write(g_order.fd, "0x", 2));
+		if (g_order.conv == 'o')
 			write(g_order.fd, "0", 1);
-		return (2 - (g_order.conv == 'o' || g_order.conv == 'f'));
+		return (1);
 	}
 	if (g_order.conv == 'd' || g_order.conv == 'f')
 	{
@@ -48,9 +48,7 @@ int	cal_zero(int length)
 		- length - g_order.negative_num;
 	if (!g_order.prec)
 	{
-		if (g_order.hash == 1 && g_order.conv == 'o')
-			zero -= 1;
-		else if (g_order.hash == 1)
+		if (g_order.hash == 1 && g_order.conv != 'o')
 			zero -= 2;
 	}
 	else

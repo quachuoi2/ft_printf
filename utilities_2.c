@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/19 11:27:54 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/05/31 14:04:32 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,14 @@ void	mfw_prec_assigner(char **fmt, va_list ap)
 		write(2, "error: cannot open file\n", 24);
 } */
 
-void	extra_functionality(char **fmt, char default_color[5], int *fd,
+void	extra_functionality(char **fmt, char default_color[6], int *fd,
 			va_list ap)
 {
 	char	*color;
 
 	color = NULL;
-	if (*(++*fmt) == 'r')
+	(*fmt)++;
+	if (*(*fmt) == 'r')
 		color = "\x1B[31m";
 	else if (**fmt == 'g')
 		color = "\x1B[32m";

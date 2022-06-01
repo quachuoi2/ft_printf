@@ -6,7 +6,7 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/24 10:35:47 by qnguyen           #+#    #+#              #
-#    Updated: 2022/04/24 10:17:36 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/06/01 12:46:47 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,7 @@ all: $(NAME)
 $(NAME): $(addsuffix .c, $(SRCS))
 	make -C $(LIB_DIR)
 	gcc -c $(addsuffix .c, $(SRCS)) $(FLAGS) -I$(LIB_DIR) #-O3
-	cp $(LIB_DIR)libft.a .
-	cp libft.a $(NAME)
+	mv $(LIB_DIR)libft.a ./$(NAME)
 	ar -rcs $(NAME) $(addsuffix .o, $(SRCS))
 
 m:

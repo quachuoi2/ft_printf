@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/21 07:38:51 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/01 12:43:00 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	put_d(va_list ap)
 	}
 	if (g_order.prec == -1 && n == 0)
 	{
-		if (g_order.mfw)
+		if (g_order.mfw > 1)
 			write(g_order.fd, " ", 1);
 		else
 			return (length - 1);
@@ -99,13 +99,8 @@ int	put_f(va_list ap)
 		f = va_arg(ap, long double);
 	else
 		f = va_arg(ap, double);
-	if (1 / f < 0)
-	{
-		g_order.pos = 0;
-		if (f > -1.0L)
-			g_order.negative_num = 1;
-	}
-	length += ft_diglen(f) + g_order.prec + (g_order.prec != 0);
+	length += check_f_value(&f) + ft_diglen(f) + g_order.prec
+		+ (g_order.prec != 0);
 	bundling_bundler(&length, &hash_pos_spc);
 	length += ft_putfloat_fd(f, g_order.prec, g_order.fd);
 	if (!g_order.prec && g_order.hash && g_order.conv == 'f')
