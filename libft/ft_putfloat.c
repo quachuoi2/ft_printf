@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/05 18:39:42 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/04/24 11:51:32 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/10 19:27:29 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,16 @@ static int	set_decimal(int prec, long double lift, char *decimals)
 	ret = 1;
 	if (lift < 0)
 		lift *= -1;
-	lift -= (long long)lift;
-	lift *= 10;
+	lift = (lift - (long long)lift) * 10;
 	i = -1;
 	while (++i < prec - 1)
 	{
 		decimals[i] = (long long)lift + '0';
-		lift -= (long long)lift;
-		lift *= 10;
+		lift = (lift - (long long)lift) * 10;
 	}
-	if (lift - (long long)lift >= 0.5)
+	if (!prec && lift >= 5.000000000)
+		return (0);
+	if (lift - (long long)lift >= 0.5000000000)
 		lift++;
 	if (lift >= 10.0)
 	{
@@ -84,6 +84,8 @@ static int	set_decimal(int prec, long double lift, char *decimals)
 	decimals[i] = '\0';
 	return (ret);
 }
+/* line 74
+if (lift - (long long)lift >= 0.5000000000 && (long long)lift % 2 == 1) */
 
 int	ft_putfloat(long double lift, int prec)
 {
@@ -95,17 +97,18 @@ int	ft_putfloat(long double lift, int prec)
 
 	tmp = ft_itoa((long long)lift);
 	ft_strcpy(base_num, tmp);
-	base_len = ft_strlen(base_num);
 	free(tmp);
+	base_len = ft_strlen(base_num);
 	ret = 0;
-	if (!set_decimal(prec, lift, decimals))
+	if (!set_decimal(prec, lift, decimals)
+		&& (base_num[base_len - 1] - '0') % 2 == 1)
 	{
-		if (!round_base_num(base_len - 1, base_num))
+		ret = round_base_num(base_len - 1, base_num);
+		if (!ret)
 		{
 			base_num[0] = '1';
 			base_num[base_len] = '0';
 			base_num[base_len + 1] = '\0';
-			ret = 1;
 		}
 	}
 	print_float(base_num, decimals, prec);

@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/06/01 12:43:00 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/10 20:02:51 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,16 @@ int	put_d(va_list ap)
 {
 	long long int	n;
 	int				length;
+	int				long_min_val;
 
 	length = 0;
 	n = va_arg(ap, long long int);
 	int_converter(NULL, &n);
-	length += check_value(0, &n) + ft_diglen(n);
+	long_min_val = check_value(0, &n);
+	length += ft_diglen(n) - long_min_val;
 	bundling_bundler(&length, &hash_pos_spc);
 	if (n == (long long int)-9223372036854775808u)
-	{
-		write(g_order.fd, "9223372036854775808", 19);
-		return (length - 1);
-	}
+		return (write(g_order.fd, "9223372036854775808", 19));
 	if (g_order.prec == -1 && n == 0)
 	{
 		if (g_order.mfw > 1)
@@ -99,11 +98,12 @@ int	put_f(va_list ap)
 		f = va_arg(ap, long double);
 	else
 		f = va_arg(ap, double);
-	length += check_f_value(&f) + ft_diglen(f) + g_order.prec
+	check_f_value(&f);
+	length += ft_diglen(f) + g_order.prec
 		+ (g_order.prec != 0);
 	bundling_bundler(&length, &hash_pos_spc);
 	length += ft_putfloat_fd(f, g_order.prec, g_order.fd);
-	if (!g_order.prec && g_order.hash && g_order.conv == 'f')
+	if (!g_order.prec && g_order.hash)
 		write(g_order.fd, ".", 1);
 	return (length);
 }

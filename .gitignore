@@ -7,3 +7,4 @@ printf_tester/
 test_suite/
 valout.txt
 get_next_line.o
+a.out.dSYM

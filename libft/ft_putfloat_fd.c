@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 01:56:09 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/06/01 12:42:38 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/10 20:01:48 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,37 +22,20 @@ static void	print_float(char *base_num, char *decimals, int prec, int fd)
 	}
 }
 
-static int	round_base_num(int i, char *base_num)
+static int	round_number(int i, char *num)
 {
 	if (i < 0)
-		return (0);
-	if (base_num[i] < '9')
-	{
-		base_num[i]++;
 		return (1);
+	if (num[i] < '9')
+	{
+		num[i]++;
+		return (0);
 	}
 	else
 	{
-		base_num[i] = '0';
+		num[i] = '0';
 		i--;
-		return (round_base_num(i, base_num));
-	}
-}
-
-static int	round_prev_dec(int i, char *decimals)
-{
-	if (i < 0)
-		return (0);
-	if (decimals[i] < '9')
-	{
-		decimals[i]++;
-		return (1);
-	}
-	else
-	{
-		decimals[i] = '0';
-		i--;
-		return (round_prev_dec(i, decimals));
+		return (round_number(i, num));
 	}
 }
 
@@ -61,7 +44,7 @@ static int	set_decimal(int prec, long double lift, char *decimals)
 	int	i;
 	int	ret;
 
-	ret = 1;
+	ret = 0;
 	if (lift < 0)
 		lift *= -1;
 	lift = (lift - (long long)lift) * 10;
@@ -71,45 +54,62 @@ static int	set_decimal(int prec, long double lift, char *decimals)
 		decimals[i] = (long long)lift + '0';
 		lift = (lift - (long long)lift) * 10;
 	}
-	if (!prec && lift >= 5.000000000)
-		return (0);
-	if (lift - (long long)lift >= 0.5000000000)
-		lift++;
+	if (!prec && !(lift < 5.0))
+		return (-(lift == 5.0) | 1);
+	lift += (lift - (long long)lift > 0.5);
 	if (lift >= 10.0)
 	{
 		lift = 0;
-		ret = round_prev_dec(i - 1, decimals);
+		ret = round_number(i - 1, decimals);
 	}
 	decimals[i++] = (long long)lift + '0';
 	decimals[i] = '\0';
 	return (ret);
 }
+/*
+	ret = 0: no rounding
+	ret = 1: round up
+	ret = -1: banker rounding
+ */
 
-int	ft_putfloat_fd(long double lift, int prec, int fd)
+/* banker rounding for decimals
+replace line 76:
+if (lift - (long long)lift >= 0.5 && (long long)lift % 2 == 1) */
+
+static void	get_base_num(long double lift, char base_num[25])
 {
 	char	*tmp;
-	char	base_num[25];
-	char	decimals[25];
-	int		base_len;
-	int		ret;
 
 	tmp = ft_itoa((long long)lift);
 	ft_strcpy(base_num, tmp);
-	base_len = ft_strlen(base_num);
 	free(tmp);
-	ret = 0;
-	if (!set_decimal(prec, lift, decimals))
+}
+
+int	ft_putfloat_fd(long double lift, int prec, int fd)
+{
+	char	base_num[25];
+	char	decimals[25];
+	int		base_len;
+	int		retrn_type;
+	int		rounding_type;
+
+	get_base_num(lift, base_num);
+	base_len = ft_strlen(base_num);
+	retrn_type = 0;
+	rounding_type = set_decimal(prec, lift, decimals);
+	if (rounding_type == 1
+		|| (rounding_type == -1 && (base_num[base_len - 1] - '0') % 2 == 1))
 	{
-		if (!round_base_num(base_len - 1, base_num))
+		retrn_type = round_number(base_len - 1, base_num);
+		if (retrn_type)
 		{
 			base_num[0] = '1';
 			base_num[base_len] = '0';
 			base_num[base_len + 1] = '\0';
-			ret = 1;
 		}
 	}
 	print_float(base_num, decimals, prec, fd);
-	return (ret);
+	return (retrn_type);
 }
 
 /* print float without using string */

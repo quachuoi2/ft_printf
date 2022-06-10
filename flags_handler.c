@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 18:42:06 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/05/31 14:49:51 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/10 19:05:36 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	cal_zero(int length)
 	return (g_order.num_of_zeros);
 }
 
-int	cal_padding(int length)
+void	cal_padding(int length)
 {
 	int	padding;
 
@@ -71,12 +71,11 @@ int	cal_padding(int length)
 		- length - g_order.negative_num;
 	if (g_order.prec > length && g_order.conv != 's')
 		padding -= g_order.prec - length;
-	if (g_order.hash == 1 && g_order.conv == 'o')
+	if (g_order.hash == 1 && (g_order.conv == 'o' ))
 		padding -= 1;
 	else if (g_order.hash == 1)
 		padding -= 2;
 	g_order.num_of_padding = (padding > 0) * padding;
-	return (g_order.num_of_padding);
 }
 
 int	mfw(int length, int (*f)(void))
@@ -96,7 +95,8 @@ int	mfw(int length, int (*f)(void))
 			i += cal_zero(length);
 			return (i);
 		}
-		i += cal_padding(length);
+		cal_padding(length);
+		i += g_order.num_of_padding;
 		if (!g_order.neg)
 			put_flag(g_order.num_of_padding, ' ', g_order.fd);
 	}
