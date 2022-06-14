@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 01:56:09 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/06/10 20:01:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/10 20:26:13 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ static int	set_decimal(int prec, long double lift, char *decimals)
 	if (lift < 0)
 		lift *= -1;
 	lift = (lift - (long long)lift) * 10;
+	if (!prec && !(lift < 5.0))
+		return (-(lift == 5.0) | 1);
 	i = -1;
 	while (++i < prec - 1)
 	{
 		decimals[i] = (long long)lift + '0';
 		lift = (lift - (long long)lift) * 10;
 	}
-	if (!prec && !(lift < 5.0))
-		return (-(lift == 5.0) | 1);
 	lift += (lift - (long long)lift > 0.5);
 	if (lift >= 10.0)
 	{

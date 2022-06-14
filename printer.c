@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 05:42:47 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/06/10 20:02:51 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/06/14 17:32:35 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ int	put_d(va_list ap)
 	length += ft_diglen(n) - long_min_val;
 	bundling_bundler(&length, &hash_pos_spc);
 	if (n == (long long int)-9223372036854775808u)
-		return (write(g_order.fd, "9223372036854775808", 19));
+	{
+		write(g_order.fd, "9223372036854775808", 19);
+		return (length);
+	}
 	if (g_order.prec == -1 && n == 0)
 	{
 		if (g_order.mfw > 1)
