@@ -1,3 +1,5 @@
+# ft_printf
+
 ## About
 `ft_printf` is Hive(42)’s version of `printf`. As the students at Hive must not use any code we didn’t write ourselves (aside from a handful of specified functions), this project was created to give the students access to the most popular output method in C.
 
