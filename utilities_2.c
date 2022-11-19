@@ -6,16 +6,22 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 16:19:29 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/11/06 22:17:09 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/11/19 01:51:55 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libftprintf.h"
 
-void	put_flag(int ammount, char c, int fd)
+void	put_flag(int ammount, char c)
 {
-	while (ammount-- > 0)
-		write(fd, &c, 1);
+	int	i;
+
+	i = 0;
+	while (i < ammount)
+	{
+		g_p_str.s[g_p_str.i++] = c;
+		i++;
+	}
 }
 
 void	a_wild_mfw_appeared(va_list ap, char mfw_prec)
@@ -71,8 +77,7 @@ void	print_fd(int *fd, va_list ap, char fmt)
 		write(2, "error: cannot open file\n", 24);
 }
 
-void	extra_functionality(char **fmt, char default_color[5], int *fd,
-			va_list ap)
+void	extra_functionality(char **fmt, va_list ap, int *fd, int default_mod)
 {
 	char	*color;
 
@@ -96,7 +101,7 @@ void	extra_functionality(char **fmt, char default_color[5], int *fd,
 		write(*fd, *fmt, 1);
 	}
 	if (color)
-		write(*fd, color, 5);
-	if (default_color && color)
-		ft_strcpy(default_color, color);
+		cpy_to_g_str(color, 5);
+	if (default_mod && color)
+		ft_strcpy(g_printf_default_color, color);
 }

@@ -6,14 +6,14 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/24 10:35:47 by qnguyen           #+#    #+#              #
-#    Updated: 2022/11/06 22:18:51 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/11/19 02:50:24 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 LIBFT = libft.a
 SRCS = libftprintf prefix utilities utilities_2 printer flags_handler\
-conversion_prefix_adapter
+conversion_prefix_adapter init printf_d2base print_float
 FLAGS = -Wall -Wextra -Werror
 NITPICK = -Wpedantic -Wunused -Wconversion -Wunreachable-code -Wtype-limits
 LIB_DIR = libft/
@@ -24,8 +24,13 @@ all: $(NAME)
 $(NAME): $(addsuffix .c, $(SRCS))
 	make -C $(LIB_DIR)
 	gcc -c $(addsuffix .c, $(SRCS)) $(FLAGS) -I$(LIB_DIR)
-	mv $(LIB_DIR)libft.a ./$(NAME)
+	cp $(LIB_DIR)libft.a .
+	mv libft.a $(NAME)
 	ar -rcs $(NAME) $(addsuffix .o, $(SRCS))
+
+m:
+	@gcc -g $(addsuffix .c, $(SRCS)) main.c -L$(LIB_DIR) $(LIB) -I$(LIB_DIR) #-O3
+	@./a.out
 
 clean:
 	@/bin/rm -f $(addsuffix .o, $(SRCS))
