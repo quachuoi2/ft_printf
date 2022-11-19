@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/11/19 02:50:06 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/11/19 05:15:48 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	cpy_to_g_str(char *src, int amount);
 void	put_flag(int ammount, char c);
 void	a_wild_mfw_appeared(va_list ap, char m_p);
 void	mfw_prec_assigner(char **fmt, va_list ap);
+
+//extra.c
 void	extra_functionality(char **fmt, va_list ap, int *fd, int default_mod);
 
 //printer.c

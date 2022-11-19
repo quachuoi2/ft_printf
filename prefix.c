@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/30 11:17:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/11/19 00:48:21 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/11/19 04:45:03 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	check_flag(char **fmt)
 
 void	check_conv(char **fmt)
 {
-	char	conv[13];
+	char	*conv;
 	int		i;
 
 	if (**fmt == 'i')
@@ -73,7 +73,7 @@ void	check_conv(char **fmt)
 		g_order.func_idx = 2;
 		return ;
 	}
-	ft_strcpy(conv, "csdfpbouxX %\0");
+	conv = "csdfpbouxX %\0";
 	i = -1;
 	while (conv[++i])
 	{

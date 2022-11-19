@@ -6,14 +6,14 @@
 #    By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/24 10:35:47 by qnguyen           #+#    #+#              #
-#    Updated: 2022/11/19 02:50:24 by qnguyen          ###   ########.fr        #
+#    Updated: 2022/11/19 04:39:59 by qnguyen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 LIBFT = libft.a
 SRCS = libftprintf prefix utilities utilities_2 printer flags_handler\
-conversion_prefix_adapter init printf_d2base print_float
+conversion_prefix_adapter init printf_d2base print_float extra
 FLAGS = -Wall -Wextra -Werror
 NITPICK = -Wpedantic -Wunused -Wconversion -Wunreachable-code -Wtype-limits
 LIB_DIR = libft/

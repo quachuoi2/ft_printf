@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:10 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/11/19 02:35:28 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/11/19 05:29:42 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int	convert(char **fmt, va_list ap, int *fd)
 	initialize_order(*fd);
 	char_printed = take_subway_order(fmt, ap);
 	if (g_order.color)
-		cpy_to_g_str(g_printf_default_color, 5);
+		cpy_to_g_str(g_printf_default_color, ft_strlen(g_printf_default_color));
 	return (char_printed);
 }
 
@@ -93,6 +93,6 @@ int	ft_printf(const char *fmt, ...)
 			fmt++;
 	}
 	va_end(ap);
-	write(fd, g_p_str.s, char_printed);
+	write(fd, g_p_str.s, g_p_str.i);
 	return (char_printed);
 }
