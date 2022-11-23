@@ -6,7 +6,7 @@
 /*   By: qnguyen <qnguyen@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 10:49:12 by qnguyen           #+#    #+#             */
-/*   Updated: 2022/11/19 05:15:48 by qnguyen          ###   ########.fr       */
+/*   Updated: 2022/11/23 02:49:43 by qnguyen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "libft.h"
 # include <fcntl.h>
 
-# define STRING_SIZE 1000
+# define STRING_SIZE 1000000
 
 typedef struct s_order
 {
